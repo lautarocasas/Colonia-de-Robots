@@ -1,4 +1,4 @@
-package coloniaDeRobots;
+package coloniaDeRobots.Cofres;
 import java.util.HashMap;
 
 public abstract class Cofre {
