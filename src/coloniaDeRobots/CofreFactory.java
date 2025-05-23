@@ -1,8 +1,11 @@
 package coloniaDeRobots;
+import coloniaDeRobots.Cofres.*;
 
-import coloniaDeRobots.Cofres.Cofre;
-
-public abstract class CofreFactory {
-	abstract Cofre crearCofre(int coordX,int coordY);
+public interface CofreFactory {
+    CofreSolicitud crearCofreSolicitud();
+    CofreProvisionActiva crearCofreProvisionActiva();
+    CofreProvisionPasiva crearCofreProvisionPasiva();
+    CofreIntermedio crearCofreIntermedio();
+    CofreAlmacenamiento crearCofreAlmacenamiento();
 }
 
