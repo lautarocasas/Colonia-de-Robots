@@ -1,7 +1,12 @@
 package coloniaDeRobots;
+import coloniaDeRobots.Ubicacion;
 
 public class Robopuerto {
-	private int coordX;
-	private int coordY;
-	private int alcanceMax;
+	private Ubicacion ubicacion;
+	private double alcanceMax;
+	
+	public Robopuerto(int coordX,int coordY,double alcance) {
+		this.ubicacion = new Ubicacion(coordX,coordY);
+		this.alcanceMax = alcance;
+	}
 }
