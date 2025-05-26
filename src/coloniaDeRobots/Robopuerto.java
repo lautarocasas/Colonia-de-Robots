@@ -1,5 +1,4 @@
 package coloniaDeRobots;
-import coloniaDeRobots.Ubicacion;
 
 public class Robopuerto {
 	private Ubicacion ubicacion;
