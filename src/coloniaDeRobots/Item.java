@@ -1,6 +1,6 @@
 package coloniaDeRobots;
 
 public class Item {
-	private int id;
+	private String id;
 	private String nombre;
 }
