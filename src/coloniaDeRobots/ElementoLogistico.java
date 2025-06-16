@@ -1,6 +1,5 @@
 package coloniaDeRobots;
 import java.util.HashMap;
-import java.util.Set;
 
 public abstract class ElementoLogistico {
 	private Ubicacion ubicacion;
@@ -8,5 +7,5 @@ public abstract class ElementoLogistico {
 	
 	public ElementoLogistico(double coordX, double coordY) {
 		this.ubicacion = new Ubicacion(coordX,coordY);
-	}		
+	}	
 }
