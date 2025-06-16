@@ -1,7 +1,5 @@
 package coloniaDeRobots;
 
-import coloniaDeRobots.Cofres.Cofre;
-
 public class Solicitud {
     private Cofre cofreSolicitante;
     private Item item;
