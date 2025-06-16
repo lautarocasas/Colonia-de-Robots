@@ -1,10 +1,8 @@
 package coloniaDeRobots;
 
-public class RobotLogistico {
-	private Ubicacion ubicacion;
-	
-	public RobotLogistico(int coordX,int coordY) {
-		this.ubicacion = new Ubicacion(coordX,coordY);
+public class RobotLogistico extends ElementoLogistico {
+	public RobotLogistico(double coordX,double coordY) {
+		super(coordX,coordY);
 	}
 	
 }

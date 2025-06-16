@@ -1,19 +1,25 @@
 package coloniaDeRobots;
 
 public class Ubicacion {
-	private int coordX;
-	private int coordY;
+	private double coordX;
+	private double coordY;
 	
-	public Ubicacion(int coordX,int coordY) {
+	public Ubicacion(double coordX,double coordY) {
 		this.coordX = coordX;
 		this.coordY = coordY;
 	}
 	
-	public int getX() {
+    public double calcularDistancia(Ubicacion otra) {
+        double dx = this.coordX - otra.coordX;
+        double dy = this.coordY - otra.coordY;
+        return Math.hypot(dx, dy);
+    }
+	
+	public double getX() {
 		return this.coordX;
 	}
 	
-	public int getY() {
+	public double getY() {
 		return this.coordY;
 	}
 }
