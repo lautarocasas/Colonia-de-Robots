@@ -22,4 +22,8 @@ public class SistemaLogistico {
     public void marcarSolicitudComoSatisfecha(Solicitud solicitud) {
         solicitudesPendientes.remove(solicitud);
     }
+    
+    public void asignarRobotParaEntrega(Cofre origen, Cofre destino, Item item, int cantidad) {
+
+    }
 }
