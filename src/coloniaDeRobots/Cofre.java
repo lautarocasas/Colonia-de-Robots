@@ -1,15 +1,12 @@
-package coloniaDeRobots.Cofres;
+package coloniaDeRobots;
 import java.util.HashMap;
 
-import coloniaDeRobots.*;
-
-public abstract class Cofre {
+public abstract class Cofre extends ElementoLogistico{
 	protected Ubicacion ubicacion;
 	protected HashMap<Item,Integer> inventario; //Mapa que asigna a cada itemId una cantidad
 	
-	Cofre(int coordX,int coordY){
-		this.ubicacion = new Ubicacion(coordX,coordY);
-		this.inventario = new HashMap<Item,Integer>();
+	public Cofre(double coordX,double coordY) {
+		super(coordX,coordY);
 	}
 	
 	public void accion(SistemaLogistico sistema) {
