@@ -9,7 +9,7 @@ public abstract class Cofre extends ElementoLogistico{
 		super(coordX,coordY);
 	}
 	
-	public void accion(SistemaLogistico sistema) {
+	public void accionar(SistemaLogistico sistema) {
 		//El cofre debe tener acceso al estado general del sistema
 	}
 	
@@ -18,16 +18,16 @@ public abstract class Cofre extends ElementoLogistico{
 		return cant;
 	}
 	
-    public boolean retirarItem(Item item, int cantidad) {
-        int cantActual = this.getCantidadItem(item);
-        if (cantActual >= cantidad) {
-        	inventario.put(item, cantActual - cantidad);
-        	if (this.getCantidadItem(item) == 0) //Si al restar la cantidad solicitada no queda ningun item, se elimina el item del mapa
-        		inventario.remove(item);
-        	return true;        	
-        }else        
-        	return false;
-    }
+	public boolean retirarItem(Item item, int cantSolicitada) {
+		int cantActual = this.getCantidadItem(item);
+		if (cantActual < cantSolicitada) {
+			return false;
+		}
+		inventario.put(item, cantActual - cantSolicitada);
+		if (this.getCantidadItem(item) == 0)
+			inventario.remove(item);
+		return true;
+	}
     
     public void agregarItem(Item item, int cantidad) {
     	int cantActual = this.getCantidadItem(item);
