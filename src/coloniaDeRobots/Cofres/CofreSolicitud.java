@@ -1,5 +1,6 @@
 package coloniaDeRobots.Cofres;
 
+import coloniaDeRobots.Cofre;
 import coloniaDeRobots.Item;
 import coloniaDeRobots.SistemaLogistico;
 import coloniaDeRobots.Solicitud;
