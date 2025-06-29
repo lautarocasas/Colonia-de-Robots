@@ -1,7 +1,7 @@
 package coloniaDeRobots;
 import java.util.ArrayList;
 import java.util.List;
-import coloniaDeRobots.Cofres.*;
+import coloniaDeRobots.cofres.*;
 
 public class SistemaLogistico {
     private List<Cofre> cofres;

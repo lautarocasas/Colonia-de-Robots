@@ -1,4 +1,4 @@
-package coloniaDeRobots.Cofres;
+package coloniaDeRobots.cofres;
 
 import coloniaDeRobots.Cofre;
 import coloniaDeRobots.Item;

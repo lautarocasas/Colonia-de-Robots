@@ -1,4 +1,4 @@
-package coloniaDeRobots.Cofres;
+package coloniaDeRobots.cofres;
 
 public enum TipoCofre {
 	ACTIVO,

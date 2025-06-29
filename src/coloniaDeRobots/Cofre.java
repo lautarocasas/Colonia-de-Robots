@@ -33,4 +33,9 @@ public abstract class Cofre extends ElementoLogistico{
     	int cantActual = this.getCantidadItem(item);
     	inventario.put(item, cantActual+ cantidad);
     }
+
+	public void accion(SistemaLogistico sistema) {
+		// TODO Auto-generated method stub
+		
+	}
 }

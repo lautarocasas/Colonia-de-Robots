@@ -3,12 +3,18 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import coloniaDeRobots.Cofres.CofreFactory.CofreParser;
+import com.fasterxml.jackson.databind.JsonNode;
 
-private abstract class BaseParser implements CofreParser {
+import coloniaDeRobots.Item;
+import coloniaDeRobots.Ubicacion;
+import logistica.excepciones.EstructuraInvalidaException;
+import logistica.excepciones.ExcepcionLogistica;
+import logistica.excepciones.ValorInvalidoException;
+
+public abstract class BaseParser implements CofreParser {
         protected Ubicacion parseUbicacion(JsonNode n) throws ExcepcionLogistica {
             if (!n.has("x") || !n.has("y"))
-                throw new EstructuraInvalidaException("Faltan coordenadas 'x' o 'y'.");
+                throw new EstructuraInvalidaException("Faltan coordenadas 'x' o 'y'.", null);
             return new Ubicacion(n.get("x").asInt(), n.get("y").asInt());
         }
         protected Map<Item, Integer> parseInventario(JsonNode n) throws ExcepcionLogistica {

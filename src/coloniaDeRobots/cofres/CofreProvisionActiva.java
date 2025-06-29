@@ -1,4 +1,4 @@
-package coloniaDeRobots.Cofres;
+package coloniaDeRobots.cofres;
 
 import java.util.List;
 

@@ -6,9 +6,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import coloniaDeRobots.Item;
 import coloniaDeRobots.Ubicacion;
-import coloniaDeRobots.Cofres.CofreAlmacenamiento;
+import coloniaDeRobots.cofres.CofreAlmacenamiento;
+import logistica.excepciones.ExcepcionLogistica;
 
-public class AlmacenamientoParser {
+public class AlmacenamientoParser extends BaseParser {
     public CofreAlmacenamiento parse(JsonNode n) throws ExcepcionLogistica {
         Ubicacion u = parseUbicacion(n);
         Map<Item,Integer> inv = parseInventario(n);
