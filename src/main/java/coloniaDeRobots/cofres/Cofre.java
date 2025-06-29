@@ -24,7 +24,7 @@ public abstract class Cofre{
      * Cantidad actual del ítem.
      */
 	public int getCantidadItem(Item item) {
-		return inventario.getOrDefault(item,0);	// Si existe el item en el inventario, se obtiene la cantidad, sino, se obtiene 0
+		return inventario.getOrDefault(item, 0);	// Si existe el item en el inventario, se obtiene la cantidad, sino, se obtiene 0
 	}
 
 	public void accion(SistemaLogistico sistema) {

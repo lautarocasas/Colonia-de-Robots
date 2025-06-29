@@ -4,9 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import main.java.coloniaDeRobots.Robopuerto;
-import main.java.coloniaDeRobots.Ubicacion;
-
 class RobopuertoTest {
     @Test
     void testCoverageBoundary() {

@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import main.java.coloniaDeRobots.Ubicacion;
-
 class UbicacionTest {
     @Test
     void testDistanceSymmetry() {
@@ -18,7 +16,7 @@ class UbicacionTest {
     @Test
     void testToStringFormat() {
         Ubicacion p = new Ubicacion(1.2345, 6.789);
-        assertEquals("(1.23, 6.79)", p.toString());
+        assertEquals("(1,23, 6,79)", p.toString());
     }
 
     @Test
