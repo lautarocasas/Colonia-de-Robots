@@ -18,7 +18,6 @@ import main.java.coloniaDeRobots.Ubicacion;
 import main.java.logistica.excepciones.EstructuraInvalidaException;
 import main.java.logistica.excepciones.RobotFueraDeCoberturaException;
 import main.java.logistica.excepciones.ValorInvalidoException;
-import main.java.logistica.factory.RobotFactory;
 
 public class RobotFactoryTest {
     private static ObjectMapper mapper;

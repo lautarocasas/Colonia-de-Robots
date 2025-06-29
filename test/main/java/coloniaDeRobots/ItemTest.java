@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import main.java.coloniaDeRobots.Item;
-
 class ItemTest {
     @Test
     void testEqualsAndHashCodeAndToString() {

@@ -7,8 +7,6 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import main.java.coloniaDeRobots.Item;
-import main.java.coloniaDeRobots.Ubicacion;
 import main.java.coloniaDeRobots.cofres.CofreAlmacenamiento;
 
 class CofreAlmacenamientoTest {

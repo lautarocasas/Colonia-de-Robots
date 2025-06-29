@@ -9,12 +9,6 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import main.java.coloniaDeRobots.cofres.CofreAlmacenamiento;
-import main.java.coloniaDeRobots.cofres.CofreFactory;
-import main.java.coloniaDeRobots.cofres.CofreIntermedio;
-import main.java.coloniaDeRobots.cofres.CofreProvisionActiva;
-import main.java.coloniaDeRobots.cofres.CofreProvisionPasiva;
-import main.java.coloniaDeRobots.cofres.CofreSolicitud;
 import main.java.logistica.excepciones.EstructuraInvalidaException;
 import main.java.logistica.excepciones.TipoCofreDesconocidoException;
 
