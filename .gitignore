@@ -6,7 +6,7 @@ bin/
 *.class
 
 # Classpath
-*.classpath
+.classpath
 
 # Log file
 *.log
