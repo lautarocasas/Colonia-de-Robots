@@ -1,0 +1,13 @@
+{
+  "robopuertos": [
+    { "x": 0, "y": 0, "alcance": 10.0 }
+  ],
+  "cofres": [
+    { "tipo": "PROVISION_ACTIVA", "x": 1, "y": 1, "inventario": { "itemA": 10 } },
+    { "tipo": "SOLICITUD",        "x": 2, "y": 2, "solicitudes": { "itemA": 5 } },
+    { "tipo": "ALMACENAMIENTO",   "x": 3, "y": 3, "inventario": {} }
+  ],
+  "robots": [
+    { "x": 0, "y": 0, "bateria": 100, "capacidadCarga": 5 }
+  ]
+}
