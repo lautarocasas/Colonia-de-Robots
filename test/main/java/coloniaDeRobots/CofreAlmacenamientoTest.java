@@ -25,7 +25,7 @@ class CofreAlmacenamientoTest {
         assertEquals(5, cofre.getCantidadItem(item));
         assertTrue(cofre.retirarItem(item, 3));
         assertEquals(2, cofre.getCantidadItem(item));
-        assertFalse(cofre.retirarItem(item, 5));
+        assertFalse(cofre.retirarItem(item, 5)); // No me deberia dejar retirar
         assertEquals(2, cofre.getCantidadItem(item));
         assertTrue(cofre.retirarItem(item, 2));
         assertEquals(0, cofre.getCantidadItem(item));

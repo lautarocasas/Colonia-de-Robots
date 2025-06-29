@@ -43,16 +43,23 @@ public abstract class Cofre{
      */
     public boolean retirarItem(Item item, int cantSolicitada) {
         int actual = getCantidadItem(item);
-        int extraido = Math.min(actual, cantSolicitada);
-        if (extraido <= 0) {
-            LOGGER.fine(() -> String.format("[%s] Sin stock para retirar %d de %s", ubicacion, cantSolicitada, item));
+        // Solo retira si hay suficiente stock para la solicitud completa
+        if (actual < cantSolicitada) {
+            LOGGER.fine(() -> String.format("[%s] Stock insuficiente para retirar %d de %s (solo %d disponibles)",
+                ubicacion, cantSolicitada, item, actual));
             return false;
         }
-        inventario.put(item, actual - extraido);
-        if (inventario.get(item) == 0) inventario.remove(item);
-        LOGGER.info(() -> String.format("[%s] Retirado %d de %s (restan %d)", ubicacion, extraido, item, getCantidadItem(item)));
+        // Retira exactamente la cantidad solicitada
+        int restante = actual - cantSolicitada;
+        if (restante > 0) {
+            inventario.put(item, restante);
+        } else {
+            inventario.remove(item);
+        }
+        LOGGER.info(() -> String.format("[%s] Retirado %d de %s (restan %d)", ubicacion, cantSolicitada, item, getCantidadItem(item)));
         return true;
     }
+
 
     /**
      * Agrega cantidad unidades del ítem.
