@@ -1,4 +1,5 @@
 package coloniaDeRobots.cofres.parsers;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -12,23 +13,25 @@ import logistica.excepciones.ExcepcionLogistica;
 import logistica.excepciones.ValorInvalidoException;
 
 public abstract class BaseParser implements CofreParser {
-        protected Ubicacion parseUbicacion(JsonNode n) throws ExcepcionLogistica {
-            if (!n.has("x") || !n.has("y"))
-                throw new EstructuraInvalidaException("Faltan coordenadas 'x' o 'y'.", null);
-            return new Ubicacion(n.get("x").asInt(), n.get("y").asInt());
-        }
-        protected Map<Item, Integer> parseInventario(JsonNode n) throws ExcepcionLogistica {
-            Map<Item,Integer> inv = new HashMap<>();
-            if (n.has("inventario")) {
-                JsonNode invNode = n.get("inventario");
-                for (Iterator<String> it = invNode.fieldNames(); it.hasNext(); ) {
-                    String name = it.next();
-                    int qty = invNode.get(name).asInt(-1);
-                    if (qty < 0)
-                        throw new ValorInvalidoException("Cantidad negativa en inventario de " + name);
-                    inv.put(new Item(name), qty);
-                }
-            }
-            return inv;
-        }
-    }
+
+	protected Ubicacion parseUbicacion(JsonNode nodo) throws ExcepcionLogistica {
+		if (!nodo.has("x") || !nodo.has("y"))
+			throw new EstructuraInvalidaException("Faltan coordenadas 'x' o 'y'.", null);
+		return new Ubicacion(nodo.get("x").asInt(), nodo.get("y").asInt());
+	}
+
+	protected Map<Item, Integer> parseInventario(JsonNode nodo) throws ExcepcionLogistica {
+		Map<Item, Integer> inventario = new HashMap<>();
+		if (nodo.has("inventario")) {
+			JsonNode nodoInventario = nodo.get("inventario");
+			for (Iterator<String> it = nodoInventario.fieldNames(); it.hasNext();) {
+				String nombre = it.next();
+				int cantidad = nodoInventario.get(nombre).asInt(-1);
+				if (cantidad < 0)
+					throw new ValorInvalidoException("Cantidad negativa en inventario de " + nombre);
+				inventario.put(new Item(nombre), cantidad);
+			}
+		}
+		return inventario;
+	}
+}

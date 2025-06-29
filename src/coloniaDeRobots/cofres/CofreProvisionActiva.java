@@ -1,14 +1,16 @@
 package coloniaDeRobots.cofres;
 
 import java.util.List;
+import java.util.Map;
 
 import coloniaDeRobots.*;
 
 public class CofreProvisionActiva extends Cofre {
-	public CofreProvisionActiva(int coordX,int coordY){
-		super(coordX,coordY);
-	}
 	
+	public CofreProvisionActiva(Ubicacion ubicacion,Map<Item,Integer> inv) {
+		super(ubicacion,inv);
+	}
+
 	@Override
     public void accion(SistemaLogistico sistema) {
         // Buscar solicitudes en el sistema para ítems que yo tengo

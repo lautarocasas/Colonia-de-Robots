@@ -10,9 +10,10 @@ import coloniaDeRobots.cofres.CofreProvisionPasiva;
 import logistica.excepciones.ExcepcionLogistica;
 
 public class ProvisionPasivaParser extends BaseParser {
-    public CofreProvisionPasiva parse(JsonNode n) throws ExcepcionLogistica {
-        Ubicacion u = parseUbicacion(n);
-        Map<Item,Integer> inv = parseInventario(n);
-        return new CofreProvisionPasiva(u, inv);
+	
+    public CofreProvisionPasiva parse(JsonNode nodo) throws ExcepcionLogistica {
+        Ubicacion ubicacion = parseUbicacion(nodo);
+        Map<Item,Integer> inventario = parseInventario(nodo);
+        return new CofreProvisionPasiva(ubicacion, inventario);
     }
 }

@@ -1,12 +1,14 @@
 package coloniaDeRobots;
 import java.util.HashMap;
+import java.util.Map;
 
-public abstract class Cofre extends ElementoLogistico{
+public abstract class Cofre{
 	protected Ubicacion ubicacion;
 	protected HashMap<Item,Integer> inventario; //Mapa que asigna a cada itemId una cantidad
 	
-	public Cofre(double coordX,double coordY) {
-		super(coordX,coordY);
+	public Cofre(Ubicacion ubicacion,Map<Item,Integer> inv) {
+		this.ubicacion = ubicacion;
+		this.inventario = (HashMap<Item,Integer>)inv;
 	}
 	
 	public void accionar(SistemaLogistico sistema) {
@@ -37,5 +39,13 @@ public abstract class Cofre extends ElementoLogistico{
 	public void accion(SistemaLogistico sistema) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public Ubicacion getUbicacion() {
+		return this.ubicacion;
+	}
+	
+	public Map<Item,Integer> getInventario(){
+		return this.inventario;
 	}
 }

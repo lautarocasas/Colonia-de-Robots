@@ -22,4 +22,13 @@ public class Ubicacion {
 	public double getY() {
 		return this.coordY;
 	}
+	
+	public void setX(double coordX) {
+		this.coordX = coordX;
+	}
+	
+	public void setY(double coordY) {
+		this.coordY = coordY;
+	}
+	
 }

@@ -14,20 +14,21 @@ import logistica.excepciones.ExcepcionLogistica;
 import logistica.excepciones.ValorInvalidoException;
 
 public class SolicitudParser extends BaseParser {
-    public CofreSolicitud parse(JsonNode n) throws ExcepcionLogistica {
-        Ubicacion u = parseUbicacion(n);
-        Map<Item,Integer> inv = parseInventario(n);
-        JsonNode solNode = n.path("solicitudes");
-        if (solNode.isMissingNode() || solNode.size() == 0)
-            throw new EstructuraInvalidaException("Cofre SOLICITUD sin 'solicitudes'.", null);
-        Map<Item,Integer> req = new HashMap<>();
-        for (Iterator<String> it = solNode.fieldNames(); it.hasNext(); ) {
-            String name = it.next();
-            int qty = solNode.get(name).asInt(-1);
-            if (qty <= 0)
-                throw new ValorInvalidoException("Cantidad inválida en solicitud de " + name);
-            req.put(new Item(name), qty);
-        }
-        return new CofreSolicitud(u, inv, req);
-    }
+	
+	public CofreSolicitud parse(JsonNode nodo) throws ExcepcionLogistica {
+		Ubicacion ubicacion = parseUbicacion(nodo);
+		Map<Item, Integer> inventario = parseInventario(nodo);
+		JsonNode nodoSolicitud = nodo.path("solicitudes");
+		if (nodoSolicitud.isMissingNode() || nodoSolicitud.size() == 0)
+			throw new EstructuraInvalidaException("Cofre SOLICITUD sin 'solicitudes'.", null);
+		Map<Item, Integer> solicitudes = new HashMap<>();
+		for (Iterator<String> it = nodoSolicitud.fieldNames(); it.hasNext();) {
+			String nombre = it.next();
+			int cantidad = nodoSolicitud.get(nombre).asInt(-1);
+			if (cantidad <= 0)
+				throw new ValorInvalidoException("Cantidad inválida en solicitud de " + nombre);
+			solicitudes.put(new Item(nombre), cantidad);
+		}
+		return new CofreSolicitud(ubicacion, inventario, solicitudes);
+	}
 }

@@ -10,9 +10,10 @@ import coloniaDeRobots.cofres.CofreAlmacenamiento;
 import logistica.excepciones.ExcepcionLogistica;
 
 public class AlmacenamientoParser extends BaseParser {
-    public CofreAlmacenamiento parse(JsonNode n) throws ExcepcionLogistica {
-        Ubicacion u = parseUbicacion(n);
-        Map<Item,Integer> inv = parseInventario(n);
-        return new CofreAlmacenamiento(u, inv);
+	
+    public CofreAlmacenamiento parse(JsonNode nodo) throws ExcepcionLogistica {
+        Ubicacion ubicacion = parseUbicacion(nodo);
+        Map<Item,Integer> inventario = parseInventario(nodo);
+        return new CofreAlmacenamiento(ubicacion, inventario);
     }
 }

@@ -1,16 +1,26 @@
 package coloniaDeRobots.cofres;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import coloniaDeRobots.Cofre;
 import coloniaDeRobots.Item;
 import coloniaDeRobots.SistemaLogistico;
 import coloniaDeRobots.Solicitud;
+import coloniaDeRobots.Ubicacion;
 
 public class CofreSolicitud extends Cofre{
 	private Item itemSolicitado;
 	private int cantidadSolicitada;
-	
-	public CofreSolicitud(int coordX,int coordY){
-		super(coordX,coordY);
+	private Map<Item,Integer> solicitudes = new HashMap<>();
+
+	public CofreSolicitud(Ubicacion ubicacion,Map<Item,Integer> inv,Map<Item,Integer>solicitudes) {
+		super(ubicacion,inv);
+		this.solicitudes = (HashMap<Item,Integer>)solicitudes;
+	}
+
+	public Map<Item,Integer> getSolicitudes(){
+		return solicitudes;
 	}
 	
     @Override

@@ -6,5 +6,5 @@ import coloniaDeRobots.Cofre;
 import logistica.excepciones.ExcepcionLogistica;
 
 public interface CofreParser {
-       Cofre parse(JsonNode node) throws ExcepcionLogistica;
+       Cofre parse(JsonNode nodo) throws ExcepcionLogistica;
 }
