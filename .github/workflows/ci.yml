@@ -1,0 +1,44 @@
+name: Testing de Colonia de Robots
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 23
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '23'
+
+      - name: Download JUnit Platform Console
+        run: |
+          wget -q -O junit-platform-console.jar \
+            https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.9.2/junit-platform-console-standalone-1.9.2.jar
+
+      - name: Compile sources
+        run: |
+          mkdir -p out/classes
+          find src/main/java -name '*.java' > sources.txt
+          javac -d out/classes @sources.txt
+
+      - name: Compile tests
+        run: |
+          mkdir -p out/test-classes
+          find src/test/java -name '*.java' > tests.txt
+          javac -cp junit-platform-console.jar:out/classes -d out/test-classes @tests.txt
+
+      - name: Run JUnit 5 tests
+        run: |
+          java -jar junit-platform-console.jar \
+            --class-path out/classes:out/test-classes \
+            --scan-class-path
