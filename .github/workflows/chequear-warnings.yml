@@ -44,7 +44,7 @@ jobs:
       - name: Compilar los tests sin warnings
         run: |
           mkdir -p out/test-classes
-          find src/test/java -name '*.java' > tests.txt
+          find test/main/java -name '*.java' > tests.txt
           javac -Xlint:all -Werror \
             -d out/test-classes \
             -cp out/classes:jackson-annotations-2.19.1.jar:jackson-core-2.19.1.jar:jackson-databind-2.19.1.jar:junit-platform-console-standalone.jar \
