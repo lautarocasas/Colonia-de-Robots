@@ -5,6 +5,9 @@ bin/
 # Compiled class file
 *.class
 
+# Classpath
+*.classpath
+
 # Log file
 *.log
 
