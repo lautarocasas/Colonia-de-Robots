@@ -43,7 +43,7 @@ jobs:
       - name: Compilamos los tests
         run: |
           mkdir -p out/test-classes
-          find src/test/java -name '*.java' > tests.txt
+          find test/main/java -name '*.java' > tests.txt
           javac -d out/test-classes -cp junit-platform-console.jar:jackson-annotations-2.19.1.jar:jackson-core-2.19.1.jar:jackson-databind-2.19.1.jar:out/classes @tests.txt
 
       - name: Corremos los tests en JUnit 5
