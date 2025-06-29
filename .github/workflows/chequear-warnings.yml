@@ -1,0 +1,51 @@
+name: Chequear warnings del proyecto
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check-warnings:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout al repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar JDK 23
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '23'
+
+      - name: Descargar las dependencias de Jackson para el procesamiento de JSON
+        run: |
+          wget -q -O jackson-annotations-2.19.1.jar \
+            https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.19.1/jackson-annotations-2.19.1.jar
+          wget -q -O jackson-core-2.19.1.jar \
+            https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/2.19.1/jackson-core-2.19.1.jar
+          wget -q -O jackson-databind-2.19.1.jar \
+            https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.19.1/jackson-databind-2.19.1.jar
+
+      - name: Descargar JUnit Platform Console
+        run: |
+          wget -q -O junit-platform-console-standalone.jar \
+            https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.9.2/junit-platform-console-standalone-1.9.2.jar
+
+      - name: Compilar el source sin warnings
+        run: |
+          mkdir -p out/classes
+          find src/main/java -name '*.java' > sources.txt
+          javac -Xlint:all -Werror \
+            -d out/classes \
+            -cp jackson-annotations-2.19.1.jar:jackson-core-2.19.1.jar:jackson-databind-2.19.1.jar \
+            @sources.txt
+
+      - name: Compilar los tests sin warnings
+        run: |
+          mkdir -p out/test-classes
+          find src/test/java -name '*.java' > tests.txt
+          javac -Xlint:all -Werror \
+            -d out/test-classes \
+            -cp out/classes:jackson-annotations-2.19.1.jar:jackson-core-2.19.1.jar:jackson-databind-2.19.1.jar:junit-platform-console-standalone.jar \
+            @tests.txt
