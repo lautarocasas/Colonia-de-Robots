@@ -7,7 +7,11 @@ import java.util.logging.Logger;
  * Registra en log los mensajes de error.
  */
 public class ExcepcionLogistica extends Exception {
-    private static final Logger LOGGER = Logger.getLogger(ExcepcionLogistica.class.getName());
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1508142324408395485L;
+	private static final Logger LOGGER = Logger.getLogger(ExcepcionLogistica.class.getName());
 
     public ExcepcionLogistica(String msg) {
         super(msg);
