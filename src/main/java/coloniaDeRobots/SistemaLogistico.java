@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import main.java.coloniaDeRobots.cofres.Cofre;
-import main.java.coloniaDeRobots.cofres.CofreProvisionActiva;
 
 public class SistemaLogistico {
     private static final Logger LOGGER = Logger.getLogger(SistemaLogistico.class.getName());

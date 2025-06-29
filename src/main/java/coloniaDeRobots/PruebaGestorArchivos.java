@@ -17,7 +17,7 @@ public class PruebaGestorArchivos {
         for (String path : archivos) {
             try {
                 System.out.printf("Cargando %s... ", path);
-                SistemaLogistico s = loader.cargarDesdeArchivo(path);
+                loader.cargarDesdeArchivo(path);
                 System.out.println("OK");
             } catch (ExcepcionLogistica e) {
                 System.out.println("ERROR -> " + e.getMessage());
