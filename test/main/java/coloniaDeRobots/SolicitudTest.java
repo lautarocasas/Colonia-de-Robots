@@ -1,4 +1,4 @@
-package test.java.coloniaDeRobots;
+package main.java.coloniaDeRobots;
 
 import static org.junit.jupiter.api.Assertions.*;
 
