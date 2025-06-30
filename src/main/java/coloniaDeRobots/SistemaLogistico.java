@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import main.java.coloniaDeRobots.cofres.Cofre;
 
@@ -12,6 +13,7 @@ public class SistemaLogistico {
     private final List<Robopuerto> puertos = new ArrayList<>();
     private final List<RobotLogistico> robots = new ArrayList<>();
     private final List<Solicitud> solicitudes = new LinkedList<>();
+    private final List<Solicitud> solicitudesCompletadas = new ArrayList<>();
     private final double factorConsumo;
 
     public SistemaLogistico(double factorConsumo) {
@@ -28,16 +30,24 @@ public class SistemaLogistico {
         LOGGER.info(() -> "Solicitud registrada: " + s.getItem() + " en " + s.getCofreOrigen().getUbicacion());
     }
 
-    public List<Solicitud> obtenerSolicitudesPendientes(Cofre origen) {
-        List<Solicitud> out = new ArrayList<>();
-        for (Solicitud s : solicitudes) if (!s.estaCompletada() && s.getCofreOrigen().equals(origen)) out.add(s);
-        return out;
+    public List<Solicitud> obtenerSolicitudesPendientes() {
+        return solicitudes.stream()
+            .filter(s -> !s.estaCompletada())
+            .toList();
     }
 
-    public int getCantidadRecibida(Cofre c, Item item) {
+    public List<Solicitud> obtenerSolicitudesPendientes(Cofre destino) {
         return solicitudes.stream()
-            .filter(s -> s.getCofreOrigen().equals(c) && s.getItem().equals(item))
-            .mapToInt(Solicitud::getCantidadRecibida).sum();
+            .filter(s -> s.getCofreDestino().equals(destino) && !s.estaCompletada())
+            .toList();
+    }
+
+
+    public int getCantidadRecibida(Cofre c, Item item) {
+        return Stream.concat(solicitudes.stream(), solicitudesCompletadas.stream())
+            .filter(s -> s.getCofreDestino().equals(c) && s.getItem().equals(item))
+            .mapToInt(Solicitud::getCantidadRecibida)
+            .sum();
     }
 
     /**
@@ -47,18 +57,20 @@ public class SistemaLogistico {
     public void generarTransporte(Cofre origen, Cofre destino, Item item, int cantidad) {
         LOGGER.info(() -> String.format("Generando transporte: %d de %s de %s a %s", cantidad, item,
             origen.getUbicacion(), destino.getUbicacion()));
-        // Registrar entrega en la solicitud del destino
+
         solicitudes.stream()
-            .filter(s -> s.getCofreOrigen().equals(destino) && s.getItem().equals(item) && !s.estaCompletada())
+            .filter(s -> s.getCofreDestino().equals(destino) && s.getItem().equals(item) && !s.estaCompletada())
             .findFirst()
             .ifPresent(s -> {
                 s.registrarEntrega(cantidad);
                 if (s.estaCompletada()) {
                     solicitudes.remove(s);
+                    solicitudesCompletadas.add(s);  // ← ✅ conservar
                     LOGGER.info(() -> String.format("Solicitud completada y removida: %s en %s", item, destino.getUbicacion()));
                 }
             });
     }
+
 
     // Métodos para planificar rutas, asignar robots, simular ciclos, etc.
     // Pendientes de implementar basados en grafo y cobertura.
