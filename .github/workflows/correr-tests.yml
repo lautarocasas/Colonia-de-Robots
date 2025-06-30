@@ -1,0 +1,53 @@
+name: Testing de Colonia de Robots
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout al repo
+        uses: actions/checkout@v3
+
+      - name: Configuramos el JDK 23
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '23'
+
+      - name: Descargamos JUnit Platform Console
+        run: |
+          wget -q -O junit-platform-console.jar \
+            https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.9.2/junit-platform-console-standalone-1.9.2.jar
+
+      - name: Descargamos las dependencias de Jackson para el manejo de JSONs
+        run: |
+          wget -q -O jackson-annotations-2.19.1.jar \
+            https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.19.1/jackson-annotations-2.19.1.jar
+          wget -q -O jackson-core-2.19.1.jar \
+            https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/2.19.1/jackson-core-2.19.1.jar
+          wget -q -O jackson-databind-2.19.1.jar \
+            https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.19.1/jackson-databind-2.19.1.jar
+
+      - name: Compilamos los recursos descargados y el código
+        run: |
+          mkdir -p out/classes
+          find src/main/java -name '*.java' > sources.txt
+          javac -d out/classes -cp junit-platform-console.jar:jackson-annotations-2.19.1.jar:jackson-core-2.19.1.jar:jackson-databind-2.19.1.jar @sources.txt
+
+      - name: Compilamos los tests
+        run: |
+          mkdir -p out/test-classes
+          find test/main/java -name '*.java' > tests.txt
+          javac -d out/test-classes -cp junit-platform-console.jar:jackson-annotations-2.19.1.jar:jackson-core-2.19.1.jar:jackson-databind-2.19.1.jar:out/classes @tests.txt
+
+      - name: Corremos los tests en JUnit 5
+        run: |
+          java -jar junit-platform-console.jar \
+            --classpath out/classes:out/test-classes:jackson-annotations-2.19.1.jar:jackson-core-2.19.1.jar:jackson-databind-2.19.1.jar \
+            --scan-class-path
