@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 
 import main.java.coloniaDeRobots.cofres.Cofre;
 import main.java.coloniaDeRobots.eventos.EventBus;
-import main.java.coloniaDeRobots.eventos.RobotEvent;
 import main.java.coloniaDeRobots.eventos.SolicitudRegistradaEvent;
 import main.java.coloniaDeRobots.eventos.TransporteGeneradoEvent;
 
