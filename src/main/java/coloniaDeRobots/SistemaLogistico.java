@@ -65,7 +65,7 @@ public class SistemaLogistico {
                 s.registrarEntrega(cantidad);
                 if (s.estaCompletada()) {
                     solicitudes.remove(s);
-                    solicitudesCompletadas.add(s);  // ← ✅ conservar
+                    solicitudesCompletadas.add(s);
                     LOGGER.info(() -> String.format("Solicitud completada y removida: %s en %s", item, destino.getUbicacion()));
                 }
             });
