@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import main.java.coloniaDeRobots.Robopuerto;
 import main.java.coloniaDeRobots.RobotLogistico;
 import main.java.coloniaDeRobots.SistemaLogistico;
+import main.java.coloniaDeRobots.SistemaLogisticoBuilder;
 import main.java.coloniaDeRobots.cofres.Cofre;
 import main.java.coloniaDeRobots.cofres.CofreFactory;
 import main.java.coloniaDeRobots.util.ResultadoConectividad;
@@ -69,10 +70,13 @@ public class GestorArchivos {
             validarUbicaciones(cofres, robopuertos);
 
             // 6. Construir sistema
-            SistemaLogistico sistema = new SistemaLogistico(1.0);
-            cofres.forEach(sistema::agregarCofre);
-            robopuertos.forEach(sistema::agregarRobopuerto);
-            robots.forEach(sistema::agregarRobot);
+            SistemaLogistico sistema = new SistemaLogisticoBuilder()
+            	    .withFactorConsumo(1.0)
+            	    .addCofres(cofres)
+            	    .addRobopuertos(robopuertos)
+            	    .addRobots(robots)
+            	    .build();
+
             return sistema;
 
         } catch (ExcepcionLogistica e) {
