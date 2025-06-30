@@ -9,6 +9,8 @@ import main.java.coloniaDeRobots.Item;
 import main.java.coloniaDeRobots.SistemaLogistico;
 import main.java.coloniaDeRobots.Solicitud;
 import main.java.coloniaDeRobots.Ubicacion;
+import main.java.coloniaDeRobots.eventos.CofreAccionadoEvent;
+import main.java.coloniaDeRobots.eventos.EventBus;
 
 public class CofreIntermedio extends Cofre {
 	private final Map<Item, Integer> solicitudes;
@@ -20,7 +22,8 @@ public class CofreIntermedio extends Cofre {
 
 	@Override
 	public void accionar(SistemaLogistico sistema) {
-		Logger.getLogger(getClass().getName()).info(() -> "Accionando Intermedio en " + ubicacion);
+		EventBus.getDefault().post(new CofreAccionadoEvent(this));
+		
 		// Fase solicitud
 		for (Map.Entry<Item, Integer> e : solicitudes.entrySet()) {
 			Item item = e.getKey();
