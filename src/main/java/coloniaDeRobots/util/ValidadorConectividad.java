@@ -100,17 +100,17 @@ public class ValidadorConectividad {
 		return comp;
 	}
 
-	private static void asignarComponenteBFS(ElementoLogistico start, int id,
+	private static void asignarComponenteBFS(ElementoLogistico inicio, int idComp,
 			Map<ElementoLogistico, List<ElementoLogistico>> adj, Map<ElementoLogistico, Integer> comp) {
 		Queue<ElementoLogistico> cola = new ArrayDeque<>();
-		cola.add(start);
-		comp.put(start, id);
+		cola.add(inicio);
+		comp.put(inicio, idComp);
 		while (!cola.isEmpty()) {
 			ElementoLogistico actual = cola.poll();
-			for (ElementoLogistico vecino : adj.get(actual)) {
-				if (!comp.containsKey(vecino)) {
-					comp.put(vecino, id);
-					cola.add(vecino);
+			for (ElementoLogistico v : adj.get(actual)) {
+				if (!comp.containsKey(v)) {
+					comp.put(v, idComp);
+					cola.add(v);
 				}
 			}
 		}
