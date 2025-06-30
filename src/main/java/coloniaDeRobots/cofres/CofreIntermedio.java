@@ -11,7 +11,6 @@ import main.java.coloniaDeRobots.Solicitud;
 import main.java.coloniaDeRobots.Ubicacion;
 
 public class CofreIntermedio extends Cofre {
-	private static final Logger LOGGER = Logger.getLogger(CofreIntermedio.class.getName());
 	private final Map<Item, Integer> solicitudes;
 
 	public CofreIntermedio(Ubicacion ubicacion, Map<Item, Integer> inventario, Map<Item, Integer> solicitudes) {

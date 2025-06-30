@@ -1,6 +1,7 @@
 package main.java.coloniaDeRobots.cofres;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -15,32 +16,54 @@ import main.java.coloniaDeRobots.Solicitud;
 import main.java.coloniaDeRobots.Ubicacion;
 
 class CofreIntermedioTest {
-    private SistemaLogistico system;
-    private CofreIntermedio inter;
+    private SistemaLogistico sistema;
+    private CofreIntermedio intermedio;
     private Item item;
 
     @BeforeEach
-    void setup() {
-        system = new SistemaLogistico(1.0);
+    void configurar() {
+        sistema = new SistemaLogistico(1.0);
         item = new Item("Z");
-        inter = new CofreIntermedio(new Ubicacion(0,0), Map.of(item, 1), Map.of(item, 2));
-        system.agregarCofre(inter);
+        // Inventario inicial con 1 unidad de "Z"
+        Map<Item,Integer> inventario = Map.of(item, 1);
+        // Solicita 2 unidades de "Z"
+        Map<Item,Integer> solicitudes = Map.of(item, 2);
+        intermedio = new CofreIntermedio(
+            new Ubicacion(0,0), inventario, solicitudes
+        );
+        sistema.agregarCofre(intermedio);
     }
 
     @Test
-    void firstPhaseRegistersSolicitud() {
-        inter.accionar(system);
-        List<Solicitud> pend = system.obtenerSolicitudesPendientes();
-        assertEquals(1, pend.size());
-        assertEquals(2, pend.get(0).getCantidadPendiente());
+    void registraSolicitudInicial() {
+        // Primera fase: debe registrar la solicitud pendiente
+        intermedio.accionar(sistema);
+        List<Solicitud> pendientes = sistema.obtenerSolicitudesPendientes();
+        assertEquals(1, pendientes.size(), "Debe registrar una solicitud");
+        assertEquals(2, pendientes.get(0).getCantidadPendiente(),
+            "Cantidad pendiente debe ser 2");
     }
 
     @Test
-    void noNewSolicitudAfterComplete() {
-        Solicitud s = new Solicitud(inter, item, 2);
-        system.registrarSolicitud(s);
-        s.registrarEntrega(2);
-        inter.accionar(system);
-        assertTrue(system.obtenerSolicitudesPendientes().isEmpty());
+    void noRegistraNuevaSolicitudSiYaEstaCompleta() {
+        // Simular solicitud completa antes de accionar
+        Solicitud previa = new Solicitud(intermedio, item, 2);
+        sistema.registrarSolicitud(previa);
+        previa.registrarEntrega(2); // completa la solicitud
+
+        intermedio.accionar(sistema);
+        List<Solicitud> pendientes = sistema.obtenerSolicitudesPendientes();
+        assertTrue(pendientes.isEmpty(),
+            "No debe registrar nueva solicitud si ya está completa");
+    }
+
+    @Test
+    void getSolicitudesDevuelveMapaInmutableYContenidoCorrecto() {
+        Map<Item,Integer> mapa = intermedio.getSolicitudes();
+        assertEquals(1, mapa.size(), "Debe contener 1 tipo de solicitud");
+        assertTrue(mapa.containsKey(item), "Debe contener el ítem solicitado");
+        assertEquals(2, mapa.get(item).intValue(), "Cantidad solicitada debe ser 2");
+        // Verificar inmutabilidad del mapa
+        assertThrows(UnsupportedOperationException.class, () -> mapa.put(item, 5));
     }
 }
