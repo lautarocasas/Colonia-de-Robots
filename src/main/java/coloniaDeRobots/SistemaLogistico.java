@@ -95,46 +95,42 @@ public class SistemaLogistico {
 	 * Ejecuta la simulación: en cada ciclo, los cofres accionan y luego los robots
 	 * se mueven y recargan.
 	 */
-	public void run() {
+	public int run() {
 		int ciclo = 0;
-		while (true) {
-			if (solicitudes.isEmpty()) {
-				System.out.println("✅ Estado estable en " + ciclo + " ciclos.");
-				break;
-			}
+		final int MAX_CICLOS = 1000;
+
+		while (ciclo < MAX_CICLOS) {
 			System.out.println("🔄 Ciclo " + ciclo + ": " + solicitudes.size() + " solicitudes pendientes");
 
-			// Cofres actúan (generan solicitudes y transporte)
+			// 1) Cofres actúan
 			for (Cofre c : new ArrayList<>(cofres)) {
 				c.accionar(this);
 			}
 
-			// Robots ejecutan su turno: moverse y recargar
+			// 2) Robots actúan (movimiento y recarga)
 			for (RobotLogistico robot : robots) {
-				// Si tiene ruta planificada, avanza un paso
 				if (robot.tieneTarea()) {
 					robot.avanzar();
-				} else {
-					// Si no hay tarea, busco una nueva solicitud y asigno
-					Solicitud s = solicitudes.stream().findFirst().orElse(null);
-					if (s != null) {
-						robot.planificarRuta(s.getCofreOrigen().getUbicacion(), s.getCofreDestino().getUbicacion());
-					}
+				} else if (!solicitudes.isEmpty()) {
+					Solicitud s = solicitudes.get(0);
+					robot.planificarRuta(s.getCofreOrigen().getUbicacion(), s.getCofreDestino().getUbicacion());
 				}
-				// Si pasa por un robopuerto recarga
 				Robopuerto rp = robot.getRobopuertoActual();
 				if (rp != null) {
 					robot.recargar();
-					EventBus.getDefault().post(new RobotEvent(robot, rp));
 				}
 			}
 
-			ciclo++;
-			if (ciclo > 1000) {
-				System.err.println("⚠️ Límite de 1000 ciclos alcanzado.");
-				break;
+			// 3) Verificar estado estable
+			if (solicitudes.isEmpty()) {
+				System.out.println("✅ Estado estable alcanzado en " + (ciclo + 1) + " ciclos.");
+				return ciclo + 1;
 			}
+			ciclo++;
 		}
+
+	    System.err.println("⚠️ Límite de ciclos alcanzado.");
+	    return ciclo;
 	}
 	// Métodos para planificar rutas, asignar robots, simular ciclos, etc.
 	// Pendientes de implementar basados en grafo y cobertura.
