@@ -19,7 +19,7 @@ public class Main {
 		bus.register(Evento.class, metrics);
 		try {
 			GestorArchivos loader = new GestorArchivos();
-			SistemaLogistico sistema = loader.cargarDesdeArchivo("src/main/resources/config.json");
+			SistemaLogistico sistema = loader.cargarDesdeArchivo("src/main/resources/config_stress.json");
 			int ciclosEjecutados = sistema.run();  // lo adaptamos para devolver int
 		    metrics.printSummary(ciclosEjecutados);
 		} catch (ExcepcionLogistica e) {
