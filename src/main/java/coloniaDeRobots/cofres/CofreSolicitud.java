@@ -3,12 +3,13 @@ package main.java.coloniaDeRobots.cofres;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import main.java.coloniaDeRobots.Item;
 import main.java.coloniaDeRobots.SistemaLogistico;
 import main.java.coloniaDeRobots.Solicitud;
 import main.java.coloniaDeRobots.Ubicacion;
+import main.java.coloniaDeRobots.eventos.CofreAccionadoEvent;
+import main.java.coloniaDeRobots.eventos.EventBus;
 
 public class CofreSolicitud extends Cofre {
     private final Map<Item,Integer> solicitudes;
@@ -20,7 +21,9 @@ public class CofreSolicitud extends Cofre {
 
     @Override
     public void accionar(SistemaLogistico sistema) {
-        Logger.getLogger(getClass().getName()).info(() -> "Accionando Solicitud en " + ubicacion);
+        // Logger.getLogger(getClass().getName()).info(() -> "Accionando Solicitud en " + ubicacion);
+    	EventBus.getDefault().post(new CofreAccionadoEvent(this));
+    	
         for (Map.Entry<Item,Integer> e : solicitudes.entrySet()) {
             Item item = e.getKey();
             int total = e.getValue();
@@ -28,9 +31,6 @@ public class CofreSolicitud extends Cofre {
             int pendiente = total - recibidos;
             if (pendiente > 0) {
                 sistema.registrarSolicitud(new Solicitud(this, item, pendiente));
-                Logger.getLogger(getClass().getName()).info(() ->
-                    String.format("[%s] Solicita %d de %s", ubicacion, pendiente, item)
-                );
             }
         }
     }

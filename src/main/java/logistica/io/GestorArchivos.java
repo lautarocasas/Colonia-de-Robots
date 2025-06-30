@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,8 +13,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import main.java.coloniaDeRobots.Robopuerto;
 import main.java.coloniaDeRobots.RobotLogistico;
 import main.java.coloniaDeRobots.SistemaLogistico;
+import main.java.coloniaDeRobots.SistemaLogisticoBuilder;
 import main.java.coloniaDeRobots.cofres.Cofre;
 import main.java.coloniaDeRobots.cofres.CofreFactory;
+import main.java.coloniaDeRobots.util.ResultadoConectividad;
+import main.java.coloniaDeRobots.util.ValidadorConectividad;
+import main.java.coloniaDeRobots.util.ValidadorFactibilidad;
 import main.java.logistica.excepciones.EstructuraInvalidaException;
 import main.java.logistica.excepciones.ExcepcionLogistica;
 import main.java.logistica.excepciones.UbicacionDuplicadaException;
@@ -25,6 +30,7 @@ import main.java.logistica.factory.RobotFactory;
  * construyendo la red de cofres, robopuertos y robots.
  */
 public class GestorArchivos {
+	private static final Logger LOGGER = Logger.getLogger(GestorArchivos.class.getName());
     private final ObjectMapper mapper = new ObjectMapper();
     private final CofreFactory cofreFactory = new CofreFactory();
     private final RobopuertoFactory robopuertoFactory = new RobopuertoFactory();
@@ -38,23 +44,39 @@ public class GestorArchivos {
                     "Faltan secciones obligatorias: robopuertos, cofres o robots", null);
             }
 
-            // 1. Parseo de robopuertos
+            // 1. Parsear robopuertos
             List<Robopuerto> robopuertos = cargarRobopuertos(root.get("robopuertos"));
 
-            // 2. Parseo de cofres
+            // 2. Parsear cofres
             List<Cofre> cofres = cargarCofres(root.get("cofres"));
 
-            // 3. Parseo de robots
+            // 3. Validar conectividad y filtrar cofres inaccesibles
+            ResultadoConectividad cr = ValidadorConectividad.validarConectividad(cofres, robopuertos);
+            if (!cr.cofresInaccesibles.isEmpty()) {
+                LOGGER.warning(() -> String.format(
+                    "Se omitiran %d cofres fuera de cobertura: %s",
+                    cr.cofresInaccesibles.size(), cr.cofresInaccesibles));
+            }
+            cofres = cr.cofresAccesibles;
+
+            // 4. Validación de factibilidad de solicitudes
+            ValidadorFactibilidad.validarFactibilidad(cofres);
+            LOGGER.info(() -> "Todas las solicitudes tienen al menos un proveedor potencial.");
+
+            // 5. Parsear robots
             List<RobotLogistico> robots = cargarRobots(root.get("robots"), robopuertos);
 
-            // 4. Validación de ubicaciones duplicadas
+            // 5. Validar ubicaciones duplicadas
             validarUbicaciones(cofres, robopuertos);
 
-            // 5. Construcción del sistema logístico
-            SistemaLogistico sistema = new SistemaLogistico(/* factorConsumoGlobal */ 1.0);
-            cofres.forEach(sistema::agregarCofre);
-            robopuertos.forEach(sistema::agregarRobopuerto);
-            robots.forEach(sistema::agregarRobot);
+            // 6. Construir sistema
+            SistemaLogistico sistema = new SistemaLogisticoBuilder()
+            	    .withFactorConsumo(1.0)
+            	    .addCofres(cofres)
+            	    .addRobopuertos(robopuertos)
+            	    .addRobots(robots)
+            	    .build();
+
             return sistema;
 
         } catch (ExcepcionLogistica e) {

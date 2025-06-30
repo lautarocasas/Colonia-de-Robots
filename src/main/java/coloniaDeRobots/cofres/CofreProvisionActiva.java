@@ -2,12 +2,13 @@ package main.java.coloniaDeRobots.cofres;
 
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import main.java.coloniaDeRobots.Item;
 import main.java.coloniaDeRobots.SistemaLogistico;
 import main.java.coloniaDeRobots.Solicitud;
 import main.java.coloniaDeRobots.Ubicacion;
+import main.java.coloniaDeRobots.eventos.CofreAccionadoEvent;
+import main.java.coloniaDeRobots.eventos.EventBus;
 
 public class CofreProvisionActiva extends Cofre {
 	public CofreProvisionActiva(Ubicacion ubicacion, Map<Item, Integer> inventario) {
@@ -16,7 +17,8 @@ public class CofreProvisionActiva extends Cofre {
 
 	@Override
 	public void accionar(SistemaLogistico sistema) {
-		Logger.getLogger(getClass().getName()).info(() -> "Accionando Provisión Activa en " + ubicacion);
+		EventBus.getDefault().post(new CofreAccionadoEvent(this));
+
 		List<Solicitud> solicitudes = sistema.obtenerSolicitudesPendientes();
 
 		for (Solicitud s : solicitudes) {
@@ -30,8 +32,6 @@ public class CofreProvisionActiva extends Cofre {
 			int aEnviar = Math.min(disponible, pendiente);
 			if (retirarItem(item, aEnviar)) {
 				sistema.generarTransporte(this, s.getCofreDestino(), item, aEnviar);
-				Logger.getLogger(getClass().getName()).info(() -> String.format("[%s] Envío %d de %s a %s", ubicacion,
-						aEnviar, item, s.getCofreDestino().getUbicacion()));
 			}
 		}
 	}

@@ -6,6 +6,9 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import main.java.coloniaDeRobots.cofres.Cofre;
+import main.java.coloniaDeRobots.eventos.EventBus;
+import main.java.coloniaDeRobots.eventos.SolicitudRegistradaEvent;
+import main.java.coloniaDeRobots.eventos.TransporteGeneradoEvent;
 
 public class SistemaLogistico {
     private static final Logger LOGGER = Logger.getLogger(SistemaLogistico.class.getName());
@@ -27,7 +30,7 @@ public class SistemaLogistico {
 
     public void registrarSolicitud(Solicitud s) {
         solicitudes.add(s);
-        LOGGER.info(() -> "Solicitud registrada: " + s.getItem() + " en " + s.getCofreOrigen().getUbicacion());
+        EventBus.getDefault().post(new SolicitudRegistradaEvent(s));
     }
 
     public List<Solicitud> obtenerSolicitudesPendientes() {
@@ -65,10 +68,11 @@ public class SistemaLogistico {
                 s.registrarEntrega(cantidad);
                 if (s.estaCompletada()) {
                     solicitudes.remove(s);
-                    solicitudesCompletadas.add(s);  // ← ✅ conservar
+                    solicitudesCompletadas.add(s);
                     LOGGER.info(() -> String.format("Solicitud completada y removida: %s en %s", item, destino.getUbicacion()));
                 }
             });
+        EventBus.getDefault().post(new TransporteGeneradoEvent(origen, destino, item, cantidad));
     }
 
 
