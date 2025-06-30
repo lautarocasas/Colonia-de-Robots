@@ -3,7 +3,6 @@ package main.java.coloniaDeRobots.cofres;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import main.java.coloniaDeRobots.Item;
 import main.java.coloniaDeRobots.SistemaLogistico;
@@ -32,9 +31,6 @@ public class CofreSolicitud extends Cofre {
             int pendiente = total - recibidos;
             if (pendiente > 0) {
                 sistema.registrarSolicitud(new Solicitud(this, item, pendiente));
-                Logger.getLogger(getClass().getName()).info(() ->
-                    String.format("[%s] Solicita %d de %s", ubicacion, pendiente, item)
-                );
             }
         }
     }

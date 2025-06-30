@@ -2,7 +2,6 @@ package main.java.coloniaDeRobots.cofres;
 
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import main.java.coloniaDeRobots.Item;
 import main.java.coloniaDeRobots.SistemaLogistico;
@@ -33,8 +32,6 @@ public class CofreProvisionActiva extends Cofre {
 			int aEnviar = Math.min(disponible, pendiente);
 			if (retirarItem(item, aEnviar)) {
 				sistema.generarTransporte(this, s.getCofreDestino(), item, aEnviar);
-				Logger.getLogger(getClass().getName()).info(() -> String.format("[%s] Envío %d de %s a %s", ubicacion,
-						aEnviar, item, s.getCofreDestino().getUbicacion()));
 			}
 		}
 	}
