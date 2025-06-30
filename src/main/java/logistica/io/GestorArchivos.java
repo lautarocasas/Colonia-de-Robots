@@ -17,6 +17,7 @@ import main.java.coloniaDeRobots.cofres.Cofre;
 import main.java.coloniaDeRobots.cofres.CofreFactory;
 import main.java.coloniaDeRobots.util.ResultadoConectividad;
 import main.java.coloniaDeRobots.util.ValidadorConectividad;
+import main.java.coloniaDeRobots.util.ValidadorFactibilidad;
 import main.java.logistica.excepciones.EstructuraInvalidaException;
 import main.java.logistica.excepciones.ExcepcionLogistica;
 import main.java.logistica.excepciones.UbicacionDuplicadaException;
@@ -57,7 +58,11 @@ public class GestorArchivos {
             }
             cofres = cr.cofresAccesibles;
 
-            // 4. Parsear robots
+            // 4. Validación de factibilidad de solicitudes
+            ValidadorFactibilidad.validarFactibilidad(cofres);
+            LOGGER.info(() -> "Todas las solicitudes tienen al menos un proveedor potencial.");
+
+            // 5. Parsear robots
             List<RobotLogistico> robots = cargarRobots(root.get("robots"), robopuertos);
 
             // 5. Validar ubicaciones duplicadas
