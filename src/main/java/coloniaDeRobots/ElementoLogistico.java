@@ -11,7 +11,7 @@ import java.util.Objects;
 }*/
 
 public abstract class ElementoLogistico {
-    protected final Ubicacion ubicacion;
+    protected Ubicacion ubicacion;
 
     public ElementoLogistico(Ubicacion ubicacion) {
         this.ubicacion = Objects.requireNonNull(ubicacion);

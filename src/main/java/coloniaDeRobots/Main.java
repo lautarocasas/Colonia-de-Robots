@@ -17,8 +17,8 @@ public class Main {
 
 		try {
 			GestorArchivos loader = new GestorArchivos();
-			// SistemaLogistico sistema = loader.cargarDesdeArchivo("src/main/resources/complex.json");
-			loader.cargarDesdeArchivo("src/main/resources/complex.json");
+			SistemaLogistico sistema = loader.cargarDesdeArchivo("src/main/resources/complex.json");
+			sistema.run();
 		} catch (ExcepcionLogistica e) {
 			System.err.println("Error al inicializar el sistema: " + e.getMessage());
 			e.printStackTrace();
