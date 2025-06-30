@@ -1,6 +1,5 @@
 package main.java.coloniaDeRobots.eventos;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,13 +33,17 @@ public class EventBus {
 	 * Publica un evento a todos los listeners registrados para su tipo.
 	 */
 	public <T extends Evento> void post(T evento) {
-		Class<?> tipo = evento.getClass();
-		// despacho a listeners exactos
-		List<EventListener<? extends Evento>> subs = listeners.getOrDefault(tipo, Collections.emptyList());
-		for (EventListener<? extends Evento> l : subs) {
-			@SuppressWarnings("unchecked")
-			EventListener<T> listener = (EventListener<T>) l;
-			listener.onEvent(evento);
+		Class<? extends Evento> eventoClase = evento.getClass();
+		for (var entry : listeners.entrySet()) {
+			Class<? extends Evento> tipoRegistrado = entry.getKey();
+			if (tipoRegistrado.isAssignableFrom(eventoClase)) {
+				for (EventListener<? extends Evento> raw : entry.getValue()) {
+					@SuppressWarnings("unchecked")
+					EventListener<T> listener = (EventListener<T>) raw;
+					listener.onEvent(evento);
+				}
+			}
 		}
 	}
+
 }

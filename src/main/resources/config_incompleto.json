@@ -1,0 +1,16 @@
+{
+  "robopuertos": [
+    { "x": 0, "y": 0,  "alcance": 10.0 }
+  ],
+  "cofres": [
+    {
+      "tipo": "SOLICITUD",
+      "x": 2,
+      "y": 0,
+      "solicitudes": { "gold": 10 }
+    }
+  ],
+  "robots": [
+    { "x": 0, "y": 0, "bateria": 20, "capacidadCarga": 5 }
+  ]
+}
