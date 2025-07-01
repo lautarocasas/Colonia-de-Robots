@@ -1,17 +1,12 @@
 {
   "robopuertos": [
-    { "x": 0, "y": 0, "alcance": 8.0 },
-    { "x": 10, "y": 0, "alcance": 8.0 }
+    { "x": 0, "y": 0, "alcance": 6.0 }
   ],
   "cofres": [
-    { "tipo": "PROVISION_ACTIVA", "x": 1,  "y": 1,  "inventario": { "iron": 20, "circuit": 5 } },
-    { "tipo": "PROVISION_PASIVA", "x": -1, "y": 2,  "inventario": { "iron": 10 } },
-    { "tipo": "SOLICITUD",        "x": 5,  "y": 0,  "solicitudes": { "circuit": 3 } },
-    { "tipo": "INTERMEDIO",       "x": 8,  "y": 1,  "inventario": { "iron": 2 }, "solicitudes": { "iron": 5 } },
-    { "tipo": "ALMACENAMIENTO",   "x": 12, "y": -1, "inventario": {} }
+    { "tipo": "PROVISION_ACTIVA", "x": 5,  "y": 0,  "inventario": { "madera": 4 } },
+    { "tipo": "SOLICITUD",        "x": -5,  "y": 0,  "solicitudes": { "madera": 3 } }
   ],
   "robots": [
-    { "x": 0,  "y": 0,  "bateria": 50, "capacidadCarga": 5 },
-    { "x": 10, "y": 0,  "bateria": 50, "capacidadCarga": 5 }
+    { "x": 0, "y": 0,  "bateria": 5, "capacidadCarga": 3 }
   ]
 }

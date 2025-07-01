@@ -99,7 +99,7 @@ public class SistemaLogistico {
 		final int MAX_CICLOS = 1000;
 
 		while (ciclo < MAX_CICLOS) {
-			System.out.println("🔄 Ciclo " + ciclo + ": " + solicitudes.size() + " solicitudes pendientes");
+			System.out.println("🔄 Ciclo " + (ciclo + 1) + ": " + solicitudes.size() + " solicitudes pendientes");
 
 			// 1) Cofres actúan
 			for (Cofre c : new ArrayList<>(cofres)) {
