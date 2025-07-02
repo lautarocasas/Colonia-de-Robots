@@ -25,7 +25,7 @@ public class BuscadorCaminos {
 	 * Retorna la lista de ubicaciones del camino más corto entre origen y destino,
 	 * o [origen,destino] si alguno no está en la red.
 	 */
-	public static List<Ubicacion> caminoMasCorto(Ubicacion origen, Ubicacion destino, List<Cofre> cofres,
+	public static List<Ubicacion> calcularCaminoMasCorto(Ubicacion origen, Ubicacion destino, List<Cofre> cofres,
 			List<Robopuerto> puertos) {
 		// 1) Reunir todos los nodos en una lista (objetos, no ubicaciones)
 		List<ElementoLogistico> nodos = new ArrayList<>();

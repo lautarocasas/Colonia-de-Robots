@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import main.java.coloniaDeRobots.Item;
 import main.java.coloniaDeRobots.cofres.Cofre;
@@ -14,6 +15,7 @@ import main.java.coloniaDeRobots.cofres.CofreSolicitud;
 import main.java.logistica.excepciones.SolicitudInviableException;
 
 public class ValidadorFactibilidad {
+	
     private ValidadorFactibilidad() {}
 
     /**
@@ -25,52 +27,73 @@ public class ValidadorFactibilidad {
         Map<Cofre, List<Item>> inviables = new LinkedHashMap<>();
 
         // Prepara lista de proveedores iniciales
-        List<Cofre> proveedores = new ArrayList<>();
-        for (Cofre c : cofres) {
-            if (c instanceof CofreProvisionActiva || c instanceof CofreProvisionPasiva || c instanceof CofreIntermedio) {
-                proveedores.add(c);
-            }
-        }
-
+        List<Cofre> proveedores = obtenerCofresProveedores(cofres);
         // Para cada cofre con solicitudes
-        for (Cofre c : cofres) {
-            Map<Item,Integer> lista = null;
-            if (c instanceof CofreSolicitud) {
-                lista = ((CofreSolicitud) c).getSolicitudes();
-            } else if (c instanceof CofreIntermedio) {
-                lista = ((CofreIntermedio) c).getSolicitudes();
+        for (Cofre cofre : cofres) {
+            Map<Item,Integer> solicitudes = obtenerSolicitudes(cofre);
+         // Si el cofre no tiene solicitudes, se salta al siguiente.
+            if (solicitudes == null) {
+            	continue;
             }
-            if (lista == null) continue;
-
-            List<Item> faltantes = new ArrayList<>();
-            for (Item item : lista.keySet()) {
-                boolean hayProveedor = false;
-                for (Cofre p : proveedores) {
-                    if (p.getCantidadItem(item) > 0) {
-                        hayProveedor = true;
-                        break;
-                    }
-                }
-                if (!hayProveedor) {
-                    faltantes.add(item);
-                }
-            }
-            if (!faltantes.isEmpty()) {
-                inviables.put(c, faltantes);
+            List<Item> itemsFaltantes = obtenerItemsFaltantes(solicitudes,proveedores);
+         // Si hay ítems faltantes, el cofre se marca como inviable.
+            if (!itemsFaltantes.isEmpty()) {
+                inviables.put(cofre, itemsFaltantes);
             }
         }
-
-        if (!inviables.isEmpty()) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("Solicitudes inviables detectadas:\n");
-            inviables.forEach((cofre, items) -> {
-                sb.append(" - Cofre en ")
-                  .append(cofre.getUbicacion())
-                  .append(" solicita: ")
-                  .append(items)
-                  .append("\n");
-            });
-            throw new SolicitudInviableException(sb.toString());
+        haySolicitudesInviables(inviables);
+    }
+    
+    private static List<Cofre> obtenerCofresProveedores(List<Cofre> cofres){
+    	return cofres.stream()
+    			.filter(cofre-> cofre instanceof CofreProvisionActiva || 
+    						    cofre instanceof CofreProvisionPasiva ||
+    			                cofre instanceof CofreIntermedio)
+    			.collect(Collectors.toList());
+    }
+    
+    private static Map<Item, Integer> obtenerSolicitudes(Cofre cofre) {
+        if (cofre instanceof CofreSolicitud) {
+            return ((CofreSolicitud) cofre).getSolicitudes();
+        } else if (cofre instanceof CofreIntermedio) {
+            return ((CofreIntermedio) cofre).getSolicitudes();
         }
+        return new LinkedHashMap<>(); // Devuelve un mapa vacío si no es un tipo con solicitudes
+    }
+    
+    private static List<Item> obtenerItemsFaltantes(Map<Item,Integer> solicitudes,List<Cofre> proveedores){
+    	List<Item> itemsFaltantes = new ArrayList<>();
+    	boolean hayProveedor;
+    	for (Item item : solicitudes.keySet()) {
+             hayProveedor = false;
+            for (Cofre p : proveedores) {
+                if (p.getCantidadItem(item) > 0) {
+                    hayProveedor = true;
+                    break;
+                }
+            }
+            if (!hayProveedor) {
+            	itemsFaltantes.add(item);
+            }
+        }
+    	return itemsFaltantes;
+    }
+      
+    private static void haySolicitudesInviables(Map<Cofre, List<Item>> inviables) throws SolicitudInviableException {
+    	if (!inviables.isEmpty())  // 4. Si se encontraron solicitudes inviables, lanzar una excepción
+    		throw new SolicitudInviableException(construirMensajeSolicitudInviable(inviables));
+    }
+    
+    private static String construirMensajeSolicitudInviable(Map<Cofre, List<Item>> inviables) {
+    	StringBuilder sb = new StringBuilder();
+        sb.append("Solicitudes inviables detectadas:\n");
+        inviables.forEach((cofre, items) -> {
+            sb.append(" - Cofre en ")
+              .append(cofre.getUbicacion())
+              .append(" solicita: ")
+              .append(items)
+              .append("\n");
+        });
+        return sb.toString();
     }
 }

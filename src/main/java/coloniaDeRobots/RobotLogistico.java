@@ -55,7 +55,7 @@ public class RobotLogistico extends ElementoLogistico {
 	 * ubicaciones.
 	 */
 	public void planificarRuta(Ubicacion origen, Ubicacion destino) {
-		List<Ubicacion> camino = BuscadorCaminos.caminoMasCorto(origen, destino, cofres, robopuertos);
+		List<Ubicacion> camino = BuscadorCaminos.calcularCaminoMasCorto(origen, destino, cofres, robopuertos);
 		ruta.clear();
 		for (Ubicacion u : camino) {
 			ruta.add(u);
@@ -70,7 +70,7 @@ public class RobotLogistico extends ElementoLogistico {
 			return;
 		Ubicacion siguiente = ruta.poll();
 		double distancia = getUbicacion().distanciaA(siguiente);
-		double consumo = distancia * 1.0; // factor de consumo fijo
+		double consumo = distancia * 1.0;//factor de consumofijo
 		if (getBateriaActual() < consumo) {
 			// No puede avanzar sin recarga; cancelar ruta
 			ruta.clear();

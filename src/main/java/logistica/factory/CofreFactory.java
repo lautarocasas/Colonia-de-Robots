@@ -1,10 +1,12 @@
-package main.java.coloniaDeRobots.cofres;
+package main.java.logistica.factory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import main.java.coloniaDeRobots.cofres.Cofre;
+import main.java.coloniaDeRobots.cofres.TipoCofre;
 import main.java.coloniaDeRobots.cofres.parsers.AlmacenamientoParser;
 import main.java.coloniaDeRobots.cofres.parsers.CofreParser;
 import main.java.coloniaDeRobots.cofres.parsers.IntermedioParser;

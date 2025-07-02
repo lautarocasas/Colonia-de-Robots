@@ -15,13 +15,13 @@ import main.java.coloniaDeRobots.RobotLogistico;
 import main.java.coloniaDeRobots.SistemaLogistico;
 import main.java.coloniaDeRobots.SistemaLogisticoBuilder;
 import main.java.coloniaDeRobots.cofres.Cofre;
-import main.java.coloniaDeRobots.cofres.CofreFactory;
 import main.java.coloniaDeRobots.util.ResultadoConectividad;
 import main.java.coloniaDeRobots.util.ValidadorConectividad;
 import main.java.coloniaDeRobots.util.ValidadorFactibilidad;
 import main.java.logistica.excepciones.EstructuraInvalidaException;
 import main.java.logistica.excepciones.ExcepcionLogistica;
 import main.java.logistica.excepciones.UbicacionDuplicadaException;
+import main.java.logistica.factory.CofreFactory;
 import main.java.logistica.factory.RobopuertoFactory;
 import main.java.logistica.factory.RobotFactory;
 

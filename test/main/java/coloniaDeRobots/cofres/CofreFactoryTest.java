@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import main.java.logistica.excepciones.EstructuraInvalidaException;
 import main.java.logistica.excepciones.TipoCofreDesconocidoException;
+import main.java.logistica.factory.CofreFactory;
 
 class CofreFactoryTest {
     private static ObjectMapper mapper;
