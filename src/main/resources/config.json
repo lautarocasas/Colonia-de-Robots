@@ -3,7 +3,8 @@
     { "x": 0, "y": 0, "alcance": 6.0 }
   ],
   "cofres": [
-    { "tipo": "PROVISION_ACTIVA", "x": 5,  "y": 0,  "inventario": { "madera": 4 } },
+    { "tipo": "PROVISION_ACTIVA", "x": 5,  "y": 0,  "inventario": { "madera": 2 } },
+    { "tipo": "PROVISION_ACTIVA", "x": 3,  "y": 0,  "inventario": { "madera": 1 } },
     { "tipo": "SOLICITUD",        "x": -5,  "y": 0,  "solicitudes": { "madera": 3 } }
   ],
   "robots": [

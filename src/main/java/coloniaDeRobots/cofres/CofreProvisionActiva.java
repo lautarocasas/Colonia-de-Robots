@@ -36,4 +36,12 @@ public class CofreProvisionActiva extends Cofre {
 		}
 	}
 
+	@Override
+	public int ofrenda(Solicitud s) {
+		if(inventario.containsKey(s.getItem())) {
+			return inventario.get(s.getItem());			
+		}
+		return 0;
+	}
+
 }

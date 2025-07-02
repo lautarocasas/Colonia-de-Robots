@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import main.java.coloniaDeRobots.ElementoLogistico;
 import main.java.coloniaDeRobots.Item;
 import main.java.coloniaDeRobots.SistemaLogistico;
+import main.java.coloniaDeRobots.Solicitud;
 import main.java.coloniaDeRobots.Ubicacion;
 
 public abstract class Cofre extends ElementoLogistico {
@@ -28,10 +29,7 @@ public abstract class Cofre extends ElementoLogistico {
 													// obtiene 0
 	}
 
-	public void accion(SistemaLogistico sistema) {
-		// TODO Auto-generated method stub
-
-	}
+	public abstract int ofrenda(Solicitud s);
 
 	/**
 	 * Acción que realiza el cofre en cada ciclo de simulación.

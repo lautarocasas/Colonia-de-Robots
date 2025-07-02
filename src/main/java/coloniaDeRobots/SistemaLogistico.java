@@ -96,15 +96,21 @@ public class SistemaLogistico {
 	 */
 	public int run() {
 		int ciclo = 0;
+		int cantMat = 0, cantMatNueva = 0, cantMatVieja = 0;
 		final int MAX_CICLOS = 1000;
-
+		
+		
+		// Obtener las solicitudes de los cofres.
+		// 1) Cofres actúan
+		for (Cofre c : new ArrayList<>(cofres)) {
+			c.accionar(this);
+		}
+		
+		// Asignar los cofres de provision activa o pasiva
+		asignarCofresProveedoresASolicitudes();
+		
 		while (ciclo < MAX_CICLOS) {
 			System.out.println("🔄 Ciclo " + (ciclo + 1) + ": " + solicitudes.size() + " solicitudes pendientes");
-
-			// 1) Cofres actúan
-			for (Cofre c : new ArrayList<>(cofres)) {
-				c.accionar(this);
-			}
 
 			// 2) Robots actúan (movimiento y recarga)
 			for (RobotLogistico robot : robots) {
@@ -114,10 +120,10 @@ public class SistemaLogistico {
 					Solicitud s = solicitudes.get(0);
 					robot.planificarRuta(s.getCofreOrigen().getUbicacion(), s.getCofreDestino().getUbicacion());
 				}
-				Robopuerto rp = robot.getRobopuertoActual();
-				if (rp != null) {
-					robot.recargar();
-				}
+//				Robopuerto rp = robot.getRobopuertoActual();
+//				if (rp != null) {
+//					robot.recargar();
+//				}
 			}
 
 			// 3) Verificar estado estable
@@ -133,4 +139,32 @@ public class SistemaLogistico {
 	}
 	// Métodos para planificar rutas, asignar robots, simular ciclos, etc.
 	// Pendientes de implementar basados en grafo y cobertura.
+
+	private void asignarCofresProveedoresASolicitudes() {
+		int cantMat;
+		int cantMatNueva;
+		int cantMatVieja;
+		for (Cofre c : cofres) {
+			for(int i = 0; i < solicitudes.size(); i++) {
+				if(!solicitudes.get(i).tieneCofreAsignado()) {					
+					cantMat = c.ofrenda(solicitudes.get(i));
+					if(cantMat == solicitudes.get(i).getCantidadTotal() || cantMat > solicitudes.get(i).getCantidadTotal()) {
+						solicitudes.get(i).setCofreDestino(c);
+						break;
+					} else if (cantMat > 0 && cantMat < solicitudes.get(i).getCantidadTotal()) {
+						solicitudes.get(i).setCofreDestino(c);
+						// Registrar que el cofre va a entregar menos y crear un nueva solicitud.
+						cantMatVieja = solicitudes.get(i).getCantidadTotal();
+						cantMatNueva = cantMatVieja - cantMat;
+						solicitudes.get(i).setCantidadTotal(cantMat);
+						solicitudes.add(new Solicitud(
+								solicitudes.get(i).getCofreOrigen()
+								,	solicitudes.get(i).getItem()
+								,	cantMatNueva));
+						break;
+					}
+				}
+			}
+		}
+	}
 }
