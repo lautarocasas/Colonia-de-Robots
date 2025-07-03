@@ -16,12 +16,4 @@ public class CofreProvisionPasiva extends Cofre {
     public void accionar(SistemaLogistico sistema) {
         // No empuja; el sistema extrae cuando lo planifica
     }
-    
-    @Override
-	public int ofrenda(Solicitud s) {
-		if(inventario.containsKey(s.getItem())) {
-			return inventario.get(s.getItem());			
-		}
-		return 0;
-	}
 }

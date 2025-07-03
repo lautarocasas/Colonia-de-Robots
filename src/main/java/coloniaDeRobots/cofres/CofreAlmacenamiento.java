@@ -16,13 +16,6 @@ public class CofreAlmacenamiento extends Cofre {
     public void accionar(SistemaLogistico sistema) {
         // No genera acción activa ni solicitud.
         // Solo recibe transports.
-    }
-
-	@Override
-	public int ofrenda(Solicitud s) {
-
-		return -1;
-	}
-    
+    }   
     
 }

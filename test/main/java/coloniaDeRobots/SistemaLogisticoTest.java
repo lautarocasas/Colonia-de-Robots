@@ -40,7 +40,7 @@ class SistemaLogisticoTest {
         // destinaton is same cofre for simplicity
         Solicitud s1 = new Solicitud(cofre, item, 3);
         sistema.registrarSolicitud(s1);
-        sistema.generarTransporte(cofre, cofre, item, 3);
+        sistema.generarTransporte(cofre, cofre, item, 3, s1);
         assertTrue(s1.estaCompletada());
         assertTrue(sistema.obtenerSolicitudesPendientes(cofre).isEmpty());
     }
@@ -49,7 +49,7 @@ class SistemaLogisticoTest {
     void testGenerateTransporteParcial() {
         Solicitud s1 = new Solicitud(cofre, item, 5);
         sistema.registrarSolicitud(s1);
-        sistema.generarTransporte(cofre, cofre, item, 2);
+        sistema.generarTransporte(cofre, cofre, item, 2, s1);
         assertFalse(s1.estaCompletada());
         assertEquals(3, s1.getCantidadPendiente());
         assertEquals(1, sistema.obtenerSolicitudesPendientes(cofre).size());

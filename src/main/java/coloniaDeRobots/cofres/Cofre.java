@@ -28,8 +28,6 @@ public abstract class Cofre extends ElementoLogistico {
 													// obtiene 0
 	}
 
-	public abstract int ofrenda(Solicitud s);
-
 	/**
 	 * Acción que realiza el cofre en cada ciclo de simulación.
 	 */

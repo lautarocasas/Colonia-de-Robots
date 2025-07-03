@@ -16,30 +16,29 @@ public class CofreProvisionActiva extends Cofre {
 
 	@Override
 	public void accionar(SistemaLogistico sistema) {
-		System.out.println("Accionando en un cofre de provision activa");
-		List<Solicitud> solicitudes = sistema.obtenerSolicitudesPendientes();
+	    System.out.println("Accionando en un cofre de provisión activa");
+	    List<Solicitud> pendientes = sistema.obtenerSolicitudesPendientes();
 
-		for (Solicitud s : solicitudes) {
-			Item item = s.getItem();
-			int pendiente = s.getCantidadPendiente();
-			int disponible = getCantidadItem(item);
+	    for (Solicitud s : pendientes) {
+	        Item item = s.getItem();
+	        int faltante = s.getCantidadPendiente();
+	        int disponible = getCantidadItem(item);
 
-			if (pendiente <= 0 || disponible <= 0)
-				continue;
+	        if (disponible <= 0 || faltante <= 0) continue;
 
-			int aEnviar = Math.min(disponible, pendiente);
-			if (retirarItem(item, aEnviar)) {
-				sistema.generarTransporte(this, s.getCofreDestino(), item, aEnviar);
-			}
-		}
+	        int aEnviar = Math.min(disponible, faltante);
+	        if (retirarItem(item, aEnviar)) {
+	            // Ahora le paso la solicitud en curso:
+	            sistema.generarTransporte(
+	                this,
+	                s.getCofreDestino(),
+	                item,
+	                aEnviar,
+	                s               // <— aquí
+	            );
+	        }
+	    }
 	}
 
-	@Override
-	public int ofrenda(Solicitud s) {
-		if(inventario.containsKey(s.getItem())) {
-			return inventario.get(s.getItem());			
-		}
-		return 0;
-	}
 
 }

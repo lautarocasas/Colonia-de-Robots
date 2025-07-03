@@ -5,7 +5,8 @@
   "cofres": [
     { "tipo": "PROVISION_ACTIVA", "x": 5,  "y": 0,  "inventario": { "madera": 2 } },
     { "tipo": "PROVISION_ACTIVA", "x": 3,  "y": 0,  "inventario": { "madera": 1 } },
-    { "tipo": "SOLICITUD",        "x": -5,  "y": 0,  "solicitudes": { "madera": 3 } }
+    { "tipo": "SOLICITUD",        "x": -5,  "y": 0,  "solicitudes": { "madera": 3 } },
+    { "tipo": "ALMACENAMIENTO",  "x": 0, "y": 1}
   ],
   "robots": [
     { "x": 0, "y": 0,  "bateria": 10, "capacidadCarga": 3 }

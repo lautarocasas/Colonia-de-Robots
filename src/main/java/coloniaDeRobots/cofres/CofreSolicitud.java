@@ -36,11 +36,6 @@ public class CofreSolicitud extends Cofre {
 	public Map<Item, Integer> getSolicitudes() {
 		return solicitudes;
 	}
-
-	@Override
-	public int ofrenda(Solicitud s) {
-		return -1;
-	}
 	
 	
 }
