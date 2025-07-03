@@ -32,7 +32,7 @@ public class ValidadorConectividad {
 		Map<ElementoLogistico, Integer> componentes = encontrarComponentes(nodos, adj);
 
 		// Identificar IDs de componentes que contienen robopuertos
-		Set<Integer> compsConPuerto = componentesDePuertos(puertos, componentes);
+		Set<Integer> compsConPuerto = obtenerComponentesDePuertos(puertos, componentes);
 
 		// Filtrar cofres según componente
 		List<Cofre> accesibles = new ArrayList<>();
@@ -57,50 +57,60 @@ public class ValidadorConectividad {
 	private static Map<ElementoLogistico, List<ElementoLogistico>> construirAdyacencia(List<Cofre> cofres,
 			List<Robopuerto> puertos) {
 		Map<ElementoLogistico, List<ElementoLogistico>> adj = new HashMap<>();
-		// Inicializar lista vacía para cada nodo
+		inicializarNodos(cofres,puertos,adj);
+		añadirAristasCofreRobopuerto(adj,cofres,puertos);
+		añadirAristasRobopuertoARobopuerto(puertos,adj);
+		return adj;
+	}
+	
+	private static void inicializarNodos(List<Cofre> cofres,
+		List<Robopuerto> puertos,Map<ElementoLogistico, List<ElementoLogistico>>adj){
 		for (Cofre c : cofres)
 			adj.put(c, new ArrayList<>());
 		for (Robopuerto rp : puertos)
 			adj.put(rp, new ArrayList<>());
-
-		// Aristas Cofre <-> Robopuerto
-		for (Cofre c : cofres) {
-			for (Robopuerto rp : puertos) {
-				if (rp.cubre(c.getUbicacion())) {
-					adj.get(c).add(rp);
-					adj.get(rp).add(c);
-				}
-			}
-		}
-		// Aristas Robopuerto <-> Robopuerto
+	}
+	
+	private static void añadirAristasCofreRobopuerto(Map<ElementoLogistico, List<ElementoLogistico>> adj,
+			List<Cofre> cofres,List<Robopuerto> puertos) {
+        for (Cofre cofre : cofres) {
+            for (Robopuerto robopuerto : puertos) {
+                if (robopuerto.cubre(cofre.getUbicacion())) {
+                    adj.get(cofre).add(robopuerto);
+                    adj.get(robopuerto).add(cofre);
+                }
+            }
+        }
+    }
+	
+	private static void añadirAristasRobopuertoARobopuerto(List<Robopuerto> puertos,Map<ElementoLogistico, List<ElementoLogistico>> adj){
 		for (int i = 0; i < puertos.size(); i++) {
 			for (int j = i + 1; j < puertos.size(); j++) {
-				Robopuerto r1 = puertos.get(i);
-				Robopuerto r2 = puertos.get(j);
-				double d = r1.getUbicacion().distanciaA(r2.getUbicacion());
-				if (d <= r1.getAlcance() + r2.getAlcance()) {
-					adj.get(r1).add(r2);
-					adj.get(r2).add(r1);
+				Robopuerto primerRobopuerto = puertos.get(i);
+				Robopuerto segundoRobopuerto = puertos.get(j);
+				double distancia = primerRobopuerto.getUbicacion().calcularDistanciaA(segundoRobopuerto.getUbicacion());
+				if (distancia <= primerRobopuerto.getAlcance() + segundoRobopuerto.getAlcance()) { // no entiendo la validacion 
+					adj.get(primerRobopuerto).add(segundoRobopuerto);
+					adj.get(segundoRobopuerto).add(primerRobopuerto);
 				}
 			}
 		}
-		return adj;
 	}
-
+	
 	private static Map<ElementoLogistico, Integer> encontrarComponentes(List<ElementoLogistico> nodos,
 			Map<ElementoLogistico, List<ElementoLogistico>> adj) {
 		Map<ElementoLogistico, Integer> comp = new HashMap<>();
 		int id = 0;
 		for (ElementoLogistico e : nodos) {
 			if (!comp.containsKey(e)) {
-				asignarComponenteBFS(e, id, adj, comp);
+				asignarComponente(e, id, adj, comp);
 				id++;
 			}
 		}
 		return comp;
 	}
 
-	private static void asignarComponenteBFS(ElementoLogistico inicio, int idComp,
+	private static void asignarComponente(ElementoLogistico inicio, int idComp,
 			Map<ElementoLogistico, List<ElementoLogistico>> adj, Map<ElementoLogistico, Integer> comp) {
 		Queue<ElementoLogistico> cola = new ArrayDeque<>();
 		cola.add(inicio);
@@ -116,7 +126,7 @@ public class ValidadorConectividad {
 		}
 	}
 
-	private static Set<Integer> componentesDePuertos(List<Robopuerto> puertos, Map<ElementoLogistico, Integer> comp) {
+	private static Set<Integer> obtenerComponentesDePuertos(List<Robopuerto> puertos, Map<ElementoLogistico, Integer> comp) {
 		Set<Integer> set = new HashSet<>();
 		for (Robopuerto rp : puertos) {
 			set.add(comp.get(rp));
