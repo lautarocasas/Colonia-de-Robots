@@ -30,14 +30,14 @@ public class RobotLogistico extends ElementoLogistico {
 	public RobotLogistico(Ubicacion ubicacion, int capacidadCarga, double capacidadBateria) {
 		super(ubicacion);
 		if (capacidadCarga <= 0 || capacidadBateria <= 0)
-			throw new IllegalArgumentException("Capacidad inválida");
+			throw new IllegalArgumentException("Capacidad invalida");
 		this.capacidadCarga = capacidadCarga;
 		this.bateriaMaxima = capacidadBateria;
 		this.setBateriaActual(capacidadBateria);
 		this.bateriaSimulacion = bateriaActual;
 		// LOGGER.info(() -> String.format("Robot en %s: carga %d, batería %.2f",
 		// ubicacion, capacidadCarga, capacidadBateria));
-		System.out.println(String.format("Robot en %s: carga %d, batería %.2f",
+		System.out.println(String.format("Robot en %s: carga %d, bateria %.2f",
 		 ubicacion, capacidadCarga, capacidadBateria));
 	}
 
@@ -176,7 +176,7 @@ public class RobotLogistico extends ElementoLogistico {
 		setBateriaActual(Math.max(0, getBateriaActual() - cantidad));
 		//LOGGER.fine(() -> String.format("Robot en %s consumió %.2f batería (resta %.2f)", ubicacion, cantidad,
 				//getBateriaActual()));
-		System.out.println(String.format("Robot en %s consumió %.2f batería (resta %.2f)", ubicacion, cantidad,getBateriaActual()));
+		System.out.println(String.format("Robot en %s consumio %.2f batería (resta %.2f)", ubicacion, cantidad,getBateriaActual()));
 	}
 
 	/**

@@ -24,7 +24,7 @@ public class SistemaLogistico {
 
 	public SistemaLogistico(double factorConsumo) {
 		if (factorConsumo <= 0)
-			throw new IllegalArgumentException("Factor de consumo inválido");
+			throw new IllegalArgumentException("Factor de consumo invalido");
 		this.factorConsumo = factorConsumo;
 	}
 
@@ -88,7 +88,7 @@ public class SistemaLogistico {
 								destino.getUbicacion()));
 					}
 				});
-		EventBus.getDefault().post(new TransporteGeneradoEvent(origen, destino, item, cantidad));
+		//EventBus.getDefault().post(new TransporteGeneradoEvent(origen, destino, item, cantidad));
 	}
 
 	/**
@@ -120,7 +120,7 @@ public class SistemaLogistico {
 		asignarCofresProveedoresASolicitudes();
 		
 		while (ciclo < MAX_CICLOS) {
-			System.out.println("🔄 Ciclo " + (ciclo + 1) + ": " + solicitudes.size() + " solicitudes pendientes");
+			System.out.println("Ciclo " + (ciclo + 1) + ": " + solicitudes.size() + " solicitudes pendientes");
 
 			// 2) Robots actúan (movimiento y recarga)
 			for (RobotLogistico robot : robots) {
@@ -140,13 +140,13 @@ public class SistemaLogistico {
 
 			// 3) Verificar estado estable
 			if (solicitudes.isEmpty()) {
-				System.out.println("✅ Estado estable alcanzado en " + (ciclo + 1) + " ciclos.");
+				System.out.println("Estado estable alcanzado en " + (ciclo + 1) + " ciclos.");
 				return ciclo + 1;
 			}
 			ciclo++;
 		}
 
-	    System.err.println("⚠️ Límite de ciclos alcanzado.");
+	    System.out.println("Limite de ciclos alcanzado.");
 	    return ciclo;
 	}
 	// Métodos para planificar rutas, asignar robots, simular ciclos, etc.

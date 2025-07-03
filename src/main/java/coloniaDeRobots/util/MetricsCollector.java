@@ -32,11 +32,11 @@ public class MetricsCollector {//implements EventListener<Evento>
 	/** Imprime al final un resumen de las métricas. */
 	public void printSummary(int ciclos) {
 		System.out.println();
-		System.out.println("🏁 Resumen de simulación:");
+		System.out.println("Resumen de simulacion:");
 		System.out.println("  - Ciclos ejecutados:      " + ciclos + " ciclos");
 		System.out.println("  - Transportes realizados: " + totalTransportes.get());
 		System.out.printf(Locale.US, "  - Distancia total:        %.2f%n", distanciaTotal.get());
-		System.out.println("  - Recargas de batería:    " + recargas.get());
+		System.out.println("  - Recargas de bateria:    " + recargas.get());
 	}
 
 	/** Retorna el total de transportes realizados */
