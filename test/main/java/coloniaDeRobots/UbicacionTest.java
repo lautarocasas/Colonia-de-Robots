@@ -9,8 +9,8 @@ class UbicacionTest {
     void testDistanceSymmetry() {
         Ubicacion p1 = new Ubicacion(0, 0);
         Ubicacion p2 = new Ubicacion(3, 4);
-        assertEquals(5.0, p1.distanciaA(p2), 1e-9);
-        assertEquals(p1.distanciaA(p2), p2.distanciaA(p1), 1e-9);
+        assertEquals(5.0, p1.calcularDistanciaA(p2), 1e-9);
+        assertEquals(p1.calcularDistanciaA(p2), p2.calcularDistanciaA(p1), 1e-9);
     }
 
     @Test
@@ -22,6 +22,6 @@ class UbicacionTest {
     @Test
     void testZeroDistance() {
         Ubicacion p = new Ubicacion(2.0, -3.0);
-        assertEquals(0.0, p.distanciaA(p), 1e-9);
+        assertEquals(0.0, p.calcularDistanciaA(p), 1e-9);
     }
 }

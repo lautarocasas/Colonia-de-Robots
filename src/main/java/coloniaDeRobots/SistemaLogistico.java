@@ -117,17 +117,24 @@ public class SistemaLogistico {
 			// 2) Robots actúan (movimiento y recarga)
 			for (RobotLogistico robot : robots) {
 				if (robot.tieneTarea()) {
-					robot.avanzar();
-				} else if (!solicitudes.isEmpty()) {
-					Solicitud s = solicitudes.get(0);
-					robot.planificarRuta(s.getCofreOrigen().getUbicacion()
-							, s.getCofreDestino().getUbicacion()
-							, factorConsumo);
+					
+					robot.avanzar(factorConsumo);
+					
+					if(robot.tareaCompleta()) {
+						solicitudesCompletadas.add(robot.devolverSolicitud());
+						solicitudes.remove(robot.devolverSolicitud());
+						robot.finalizarSolicitud();
+					}
+						
+				} else {
+					if (!solicitudes.isEmpty()) {
+						Solicitud s = solicitudes.get(0);
+						robot.planificarRuta(s.getCofreOrigen().getUbicacion()
+								, s.getCofreDestino().getUbicacion()
+								, factorConsumo
+								, s);
+					}
 				}
-//				Robopuerto rp = robot.getRobopuertoActual();
-//				if (rp != null) {
-//					robot.recargar();
-//				}
 			}
 
 			// 3) Verificar estado estable
