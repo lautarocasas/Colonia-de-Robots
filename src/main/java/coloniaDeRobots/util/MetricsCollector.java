@@ -4,10 +4,7 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import main.java.coloniaDeRobots.eventos.EventListener;
-import main.java.coloniaDeRobots.eventos.Evento;
-import main.java.coloniaDeRobots.eventos.RobotEvent;
-import main.java.coloniaDeRobots.eventos.TransporteGeneradoEvent;
+
 
 /**
  * Collector que acumula métricas de transporte y recarga durante la simulación.

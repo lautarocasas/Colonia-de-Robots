@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import main.java.coloniaDeRobots.cofres.Cofre;
-import main.java.coloniaDeRobots.eventos.EventBus;
-import main.java.coloniaDeRobots.eventos.RobotEvent;
 import main.java.coloniaDeRobots.util.BuscadorCaminos;
 import main.java.coloniaDeRobots.util.CaminoEsperado;
 import main.java.logistica.excepciones.ExcepcionLogistica;
@@ -96,6 +94,7 @@ public class RobotLogistico extends ElementoLogistico {
 		List<ElementoLogistico> caminoEntregaColl = caminoEntrega.getCamino();
 		List<ElementoLogistico> caminoRobopuertoColl = retornoRobopuerto.getCamino();
 		
+		caminoBusquedaColl.remove(0);
 		caminoEntregaColl.remove(0);
 		caminoRobopuertoColl.remove(0);
 		

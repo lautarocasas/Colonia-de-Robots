@@ -7,8 +7,7 @@ import main.java.coloniaDeRobots.Item;
 import main.java.coloniaDeRobots.SistemaLogistico;
 import main.java.coloniaDeRobots.Solicitud;
 import main.java.coloniaDeRobots.Ubicacion;
-import main.java.coloniaDeRobots.eventos.CofreAccionadoEvent;
-import main.java.coloniaDeRobots.eventos.EventBus;
+
 
 public class CofreProvisionActiva extends Cofre {
 	public CofreProvisionActiva(Ubicacion ubicacion, Map<Item, Integer> inventario) {

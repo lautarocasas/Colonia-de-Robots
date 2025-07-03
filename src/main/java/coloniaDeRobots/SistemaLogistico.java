@@ -8,9 +8,6 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import main.java.coloniaDeRobots.cofres.Cofre;
-import main.java.coloniaDeRobots.eventos.EventBus;
-import main.java.coloniaDeRobots.eventos.SolicitudRegistradaEvent;
-import main.java.coloniaDeRobots.eventos.TransporteGeneradoEvent;
 import main.java.logistica.excepciones.ExcepcionLogistica;
 
 public class SistemaLogistico {
