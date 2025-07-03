@@ -1,7 +1,5 @@
 package main.java.logistica.excepciones;
 
-import java.util.logging.Logger;
-
 /**
  * Excepción base para toda la capa de carga/parsing.
  * Registra en log los mensajes de error.

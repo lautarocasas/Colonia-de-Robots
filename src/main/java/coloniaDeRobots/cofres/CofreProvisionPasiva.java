@@ -4,7 +4,6 @@ import java.util.Map;
 
 import main.java.coloniaDeRobots.Item;
 import main.java.coloniaDeRobots.SistemaLogistico;
-import main.java.coloniaDeRobots.Solicitud;
 import main.java.coloniaDeRobots.Ubicacion;
 
 public class CofreProvisionPasiva extends Cofre {

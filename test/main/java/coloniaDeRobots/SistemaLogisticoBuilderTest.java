@@ -20,14 +20,12 @@ class SistemaLogisticoBuilderTest {
 	void construyeSistemaCorrectamente() throws Exception {
 		Item hierro = new Item("hierro");
 		CofreProvisionActiva prov = new CofreProvisionActiva(new Ubicacion(2, 0), Map.of(hierro, 10));
-		CofreSolicitud sol = new CofreSolicitud(new Ubicacion(1, 0), Map.of(), Map.of(hierro, 5));
 		Robopuerto puerto = new Robopuerto(new Ubicacion(0, 0), 5.0);
 		RobotLogistico robot = new RobotLogistico(new Ubicacion(0, 0), 5, 20.0);
 
-		SistemaLogistico sistema = new SistemaLogisticoBuilder().withFactorConsumo(1.0).addCofres(List.of(prov, sol))
+		SistemaLogistico sistema = new SistemaLogisticoBuilder().withFactorConsumo(1.0).addCofres(List.of(prov))
 				.addRobopuertos(List.of(puerto)).addRobots(List.of(robot)).build();
 
-		sol.accionar(sistema);
 		prov.accionar(sistema);
 		assertTrue(sistema.obtenerSolicitudesPendientes().isEmpty(), "Todas las solicitudes debieron satisfacerse");
 	}

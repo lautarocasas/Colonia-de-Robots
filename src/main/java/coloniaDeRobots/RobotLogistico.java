@@ -1,10 +1,8 @@
 package main.java.coloniaDeRobots;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.logging.Logger;
 
 import main.java.coloniaDeRobots.cofres.Cofre;
 import main.java.coloniaDeRobots.util.BuscadorCaminos;
@@ -61,7 +59,6 @@ public class RobotLogistico extends ElementoLogistico {
 	 */
 	public boolean planificarRuta(Ubicacion origen, Ubicacion destino, double factorConsumo, Solicitud sol) throws ExcepcionLogistica {
 		Robopuerto ultimoRobopuerto;
-		List<ElementoLogistico> camino = new ArrayList<>();
 		
 		// Cargar la batería de simulación
 		this.bateriaSimulacion = this.bateriaActual; 
@@ -167,7 +164,6 @@ public class RobotLogistico extends ElementoLogistico {
 	/**
 	 * Avanza al siguiente punto de la ruta, consumiendo batería.
 	 */
-	@SuppressWarnings("unlikely-arg-type")
 	public void avanzar(double factorConsumo) {
 		if (ruta.isEmpty())
 			return;

@@ -1,7 +1,6 @@
 package main.java.coloniaDeRobots;
 
 import java.util.Objects;
-import java.util.logging.Logger;
 
 import main.java.coloniaDeRobots.cofres.Cofre;
 

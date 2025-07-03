@@ -15,43 +15,42 @@ import main.java.logistica.excepciones.ValorInvalidoException;
 import main.java.logistica.io.GestorArchivos;
 
 class GestorArchivosTest {
-    private static GestorArchivos loader;
+	private static GestorArchivos loader;
 
-    @BeforeAll
-    static void setup() {
-        loader = new GestorArchivos();
-    }
+	@BeforeAll
+	static void setup() {
+		loader = new GestorArchivos();
+	}
 
-    @Test
-    void testValidSimple() {
-        assertDoesNotThrow(() ->
-            loader.cargarDesdeArchivo("src/main/resources/valid_simple.json",1.0)
-        );
-    }
+	@Test
+	void testValidSimple() {
+		assertDoesNotThrow(() -> loader.cargarDesdeArchivo("src/main/resources/valid_simple.json", 1.0));
+	}
 
-    @ParameterizedTest
-    @CsvSource({
-        "src/main/resources/missing_robots.json, EstructuraInvalidaException",
-        "src/main/resources/negative_alcance.json, ValorInvalidoException",
-        "src/main/resources/duplicate_location.json, UbicacionDuplicadaException"
-    })
-    void testInvalidCases(String path, String exceptionName) {
-        Class<? extends ExcepcionLogistica> expected;
-        switch (exceptionName) {
-            case "EstructuraInvalidaException": expected = EstructuraInvalidaException.class; break;
-            case "ValorInvalidoException":     expected = ValorInvalidoException.class;     break;
-            case "UbicacionDuplicadaException":expected = UbicacionDuplicadaException.class;break;
-            default: throw new IllegalArgumentException("Excepción desconocida");
-        }
-        assertThrows(expected, () ->
-            loader.cargarDesdeArchivo(path,1.0)
-        );
-    }
+	@ParameterizedTest
+	@CsvSource({ "src/main/resources/missing_robots.json, EstructuraInvalidaException",
+			"src/main/resources/negative_alcance.json, ValorInvalidoException",
+			"src/main/resources/duplicate_location.json, UbicacionDuplicadaException" })
+	void testInvalidCases(String path, String exceptionName) {
+		Class<? extends ExcepcionLogistica> expected;
+		switch (exceptionName) {
+		case "EstructuraInvalidaException":
+			expected = EstructuraInvalidaException.class;
+			break;
+		case "ValorInvalidoException":
+			expected = ValorInvalidoException.class;
+			break;
+		case "UbicacionDuplicadaException":
+			expected = UbicacionDuplicadaException.class;
+			break;
+		default:
+			throw new IllegalArgumentException("Excepción desconocida");
+		}
+		assertThrows(expected, () -> loader.cargarDesdeArchivo(path, 1.0));
+	}
 
-    @Test
-    void testComplex() {
-        assertDoesNotThrow(() ->
-            loader.cargarDesdeArchivo("src/main/resources/complex.json",1.0)
-        );
-    }
+	@Test
+	void testComplex() {
+		assertDoesNotThrow(() -> loader.cargarDesdeArchivo("src/main/resources/complex.json", 1.0));
+	}
 }

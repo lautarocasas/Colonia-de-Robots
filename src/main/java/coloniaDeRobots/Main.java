@@ -1,7 +1,6 @@
 package main.java.coloniaDeRobots;
 
 import main.java.coloniaDeRobots.cofres.Cofre;
-import main.java.coloniaDeRobots.util.MetricsCollector;
 import main.java.logistica.excepciones.ExcepcionLogistica;
 import main.java.logistica.io.GestorArchivos;
 

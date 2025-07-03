@@ -1,7 +1,6 @@
 package main.java.coloniaDeRobots;
 
 import java.util.Objects;
-import java.util.logging.Logger;
 
 public class Item {
     private final String nombre;
