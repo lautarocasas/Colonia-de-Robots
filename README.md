@@ -1,4 +1,3 @@
-```markdown
 # Sistema Logístico Automatizado
 
 **Proyecto:** Trabajo Práctico – Programación Avanzada (UNLaM)  
@@ -82,14 +81,13 @@ Simulación de una red logística automatizada donde robots transportan ítems e
 │   │   │       ├── RobotFactory.java
 │   │   │       └── RobopuertoFactory.java
 │   │   └── resources
-│   │       ├── config\_simple.json
-│   │       ├── config\_extenso.json
-│   │       └── config\_stress.json
+│   │       ├── config.json
+│   │       ├── config_complex.json
+│   │       └── config_inviable.json
 │   └── test
 │       └── java
 │           └── ... (JUnit5 tests por clase)
 └── docs
-└── UML.md   ← diagrama de clases en Mermaid
 
 ````
 
@@ -108,7 +106,6 @@ Simulación de una red logística automatizada donde robots transportan ítems e
 1. **Compilar** todo:
    ```bash
    javac -cp ".:lib/*" src/main/java/**/*.java
-````
 
 2. **Ejecutar** simulación con configuración de ejemplo:
 
