@@ -15,18 +15,20 @@ import main.java.coloniaDeRobots.ElementoLogistico;
 import main.java.coloniaDeRobots.Robopuerto;
 import main.java.coloniaDeRobots.Ubicacion;
 import main.java.coloniaDeRobots.cofres.Cofre;
+import main.java.logistica.excepciones.ExcepcionLogistica;
 
 public class BuscadorCaminos {
-
+	
 	private BuscadorCaminos() {
 		/* utilitario */ }
 
 	/**
 	 * Retorna la lista de ubicaciones del camino más corto entre origen y destino,
 	 * o [origen,destino] si alguno no está en la red.
+	 * @throws ExcepcionLogistica 
 	 */
-	public static List<Ubicacion> calcularCaminoMasCorto(Ubicacion origen, Ubicacion destino, List<Cofre> cofres,
-			List<Robopuerto> puertos) { //tener en cuenta el tema de la bateria
+	public static CaminoEsperado calcularCaminoMasCorto(Ubicacion origen, Ubicacion destino, List<Cofre> cofres,
+			List<Robopuerto> puertos) throws ExcepcionLogistica { //tener en cuenta el tema de la bateria
 		// 1) Reunir todos los nodos en una lista (objetos, no ubicaciones)
 		List<ElementoLogistico> nodos = new ArrayList<>();
 		nodos.addAll(cofres);
@@ -37,7 +39,7 @@ public class BuscadorCaminos {
 		ElementoLogistico nodoDestino = buscarNodo(nodos, destino);
 		if (nodoOrigen == null || nodoDestino == null) {
 			// Si no existe alguno, devolvemos el fallback
-			return List.of(origen, destino);
+			throw new ExcepcionLogistica("No existen las ubicaciones solicitadas");
 		}
 
 		// 3) Construir el grafo como adyacencia con pesos = distancia euclídea
@@ -52,40 +54,46 @@ public class BuscadorCaminos {
 		// 4) Dijkstra
 		Map<ElementoLogistico, Double> dist = new HashMap<>();
 		Map<ElementoLogistico, ElementoLogistico> prev = new HashMap<>();
+		List<Robopuerto> estacionDeCarga = new ArrayList<>();
+		
 		for (ElementoLogistico n : nodos)
 			dist.put(n, Double.POSITIVE_INFINITY);
 		dist.put(nodoOrigen, 0.0);
 
-		Set<ElementoLogistico> seen = new HashSet<>();
+		Set<ElementoLogistico> nodosRecorridos = new HashSet<>();
 		PriorityQueue<ElementoLogistico> colaPrioridad = new PriorityQueue<>(Comparator.comparing(dist::get));
 		colaPrioridad.addAll(nodos);
 
 		while (!colaPrioridad.isEmpty()) {
-			ElementoLogistico u = colaPrioridad.poll();
-			if (!seen.add(u))
-				continue;
-			if (u.equals(nodoDestino))
-				break;
+            ElementoLogistico nodoSeleccionado = colaPrioridad.poll();
+            if (!nodosRecorridos.add(nodoSeleccionado))
+                continue;
+            if (nodoSeleccionado.equals(nodoDestino))
+                break;
 
-			for (var e : grafo.getOrDefault(u, Map.of()).entrySet()) {
-				ElementoLogistico v = e.getKey();
-				double peso = e.getValue();
-				double alt = dist.get(u) + peso;
-				if (alt < dist.get(v)) {
-					dist.put(v, alt);
-					prev.put(v, u);
-					colaPrioridad.add(v);
-				}
-			}
-		}
+            for (var nodoADeterminar : grafo.getOrDefault(nodoSeleccionado, Map.of()).entrySet()) {
+                ElementoLogistico siguienteNodo = nodoADeterminar.getKey();
+                double peso = nodoADeterminar.getValue();
+                double alt = dist.get(nodoSeleccionado) + peso;// q hace aca?
+                if (alt < dist.get(siguienteNodo)) {
+                    dist.put(siguienteNodo, alt);
+                    prev.put(siguienteNodo, nodoSeleccionado);
+                    colaPrioridad.add(siguienteNodo);
+                }
+            }
+        }
 
 		// 5) Reconstruir camino en términos de Ubicacion
-		List<Ubicacion> camino = new ArrayList<>();
-		for (ElementoLogistico at = nodoDestino; at != null; at = prev.get(at)) {
-			camino.add(at.getUbicacion());
+		List<ElementoLogistico> camino = new ArrayList<>();
+		for (ElementoLogistico ubicacionActual = nodoDestino; ubicacionActual != null; ubicacionActual = prev.get(ubicacionActual)) {
+			camino.add(ubicacionActual);
+			if(ubicacionActual instanceof Robopuerto)
+				estacionDeCarga.add((Robopuerto)ubicacionActual);
 		}
 		Collections.reverse(camino);
-		return camino;
+		Collections.reverse(estacionDeCarga);
+		
+		return new CaminoEsperado(camino,prev,dist,estacionDeCarga);
 	}
 
 	private static ElementoLogistico buscarNodo(List<ElementoLogistico> nodos, Ubicacion ub) {

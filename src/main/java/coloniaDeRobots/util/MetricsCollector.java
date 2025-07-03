@@ -22,7 +22,7 @@ public class MetricsCollector implements EventListener<Evento> {
 		if (evento instanceof TransporteGeneradoEvent) {
 			TransporteGeneradoEvent t = (TransporteGeneradoEvent) evento;
 			totalTransportes.incrementAndGet();
-			double d = t.origen.getUbicacion().distanciaA(t.destino.getUbicacion());
+			double d = t.origen.getUbicacion().calcularDistanciaA(t.destino.getUbicacion());
 			distanciaTotal.updateAndGet(prev -> prev + d);
 		} else if (evento instanceof RobotEvent) {
 			recargas.incrementAndGet();

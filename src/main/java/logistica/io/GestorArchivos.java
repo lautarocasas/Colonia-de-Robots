@@ -35,7 +35,7 @@ public class GestorArchivos {
 	private final CofreFactory cofreFactory = new CofreFactory();
 	private final RobopuertoFactory robopuertoFactory = new RobopuertoFactory();
 
-	public SistemaLogistico cargarDesdeArchivo(String rutaArchivo) throws ExcepcionLogistica {
+	public SistemaLogistico cargarDesdeArchivo(String rutaArchivo, double factor) throws ExcepcionLogistica {
 		try {
 			JsonNode root = mapper.readTree(new File(rutaArchivo));
 
@@ -69,7 +69,7 @@ public class GestorArchivos {
 			validarUbicaciones(cofres, robopuertos);
 
 			// 6. Construir sistema
-			SistemaLogistico sistema = new SistemaLogisticoBuilder().withFactorConsumo(1.0).addCofres(cofres)
+			SistemaLogistico sistema = new SistemaLogisticoBuilder().withFactorConsumo(factor).addCofres(cofres)
 					.addRobopuertos(robopuertos).addRobots(robots).build();
 
 			return sistema;

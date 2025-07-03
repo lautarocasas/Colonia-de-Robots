@@ -11,6 +11,7 @@ import main.java.coloniaDeRobots.cofres.Cofre;
 import main.java.coloniaDeRobots.eventos.EventBus;
 import main.java.coloniaDeRobots.eventos.SolicitudRegistradaEvent;
 import main.java.coloniaDeRobots.eventos.TransporteGeneradoEvent;
+import main.java.logistica.excepciones.ExcepcionLogistica;
 
 public class SistemaLogistico {
 	private static final Logger LOGGER = Logger.getLogger(SistemaLogistico.class.getName());
@@ -93,8 +94,9 @@ public class SistemaLogistico {
 	/**
 	 * Ejecuta la simulación: en cada ciclo, los cofres accionan y luego los robots
 	 * se mueven y recargan.
+	 * @throws ExcepcionLogistica 
 	 */
-	public int run() {
+	public int run() throws ExcepcionLogistica {
 		int ciclo = 0;
 		int cantMat = 0, cantMatNueva = 0, cantMatVieja = 0;
 		final int MAX_CICLOS = 1000;
@@ -118,7 +120,9 @@ public class SistemaLogistico {
 					robot.avanzar();
 				} else if (!solicitudes.isEmpty()) {
 					Solicitud s = solicitudes.get(0);
-					robot.planificarRuta(s.getCofreOrigen().getUbicacion(), s.getCofreDestino().getUbicacion());
+					robot.planificarRuta(s.getCofreOrigen().getUbicacion()
+							, s.getCofreDestino().getUbicacion()
+							, factorConsumo);
 				}
 //				Robopuerto rp = robot.getRobopuertoActual();
 //				if (rp != null) {
