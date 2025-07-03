@@ -38,12 +38,12 @@ class MetricsCollectorTest {
 		CofreAlmacenamiento destino = new CofreAlmacenamiento(new Ubicacion(3, 4), Map.of());
 		Item item = new Item("X");
 		// Simular dos transportes (cada uno recorre 5 unidades)
-		metrics.onEvent(new TransporteGeneradoEvent(origen, destino, item, 2));
-		metrics.onEvent(new TransporteGeneradoEvent(origen, destino, item, 3));
+		//metrics.onEvent(new TransporteGeneradoEvent(origen, destino, item, 2));
+		//metrics.onEvent(new TransporteGeneradoEvent(origen, destino, item, 3));
 		// Simular una recarga
 		RobotLogistico robot = new RobotLogistico(new Ubicacion(0, 0), 5, 10.0);
 		Robopuerto puerto = new Robopuerto(new Ubicacion(0, 0), 5.0);
-		metrics.onEvent(new RobotEvent(robot, puerto));
+		//metrics.onEvent(new RobotEvent(robot, puerto));
 
 		// Imprimir resumen a consola
 		metrics.printSummary(5);

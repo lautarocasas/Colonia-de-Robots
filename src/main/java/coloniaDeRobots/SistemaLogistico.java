@@ -14,7 +14,7 @@ import main.java.coloniaDeRobots.eventos.TransporteGeneradoEvent;
 import main.java.logistica.excepciones.ExcepcionLogistica;
 
 public class SistemaLogistico {
-	private static final Logger LOGGER = Logger.getLogger(SistemaLogistico.class.getName());
+	//private static final Logger LOGGER = Logger.getLogger(SistemaLogistico.class.getName());
 	private final List<Cofre> cofres = new ArrayList<>();
 	private final List<Robopuerto> puertos = new ArrayList<>();
 	private final List<RobotLogistico> robots = new ArrayList<>();
@@ -30,22 +30,26 @@ public class SistemaLogistico {
 
 	public void agregarCofre(Cofre c) {
 		cofres.add(c);
-		LOGGER.info(() -> "Cofre agregado: " + c.getUbicacion());
+		System.out.println("Cofre agregado: " + c.getUbicacion());
+		//LOGGER.info(() -> "Cofre agregado: " + c.getUbicacion());
 	}
 
 	public void registrarSolicitud(Solicitud s) {
 		solicitudes.add(s);
-		EventBus.getDefault().post(new SolicitudRegistradaEvent(s));
+		System.out.println("Registrando solicitud ");
+		//EventBus.getDefault().post(new SolicitudRegistradaEvent(s));
 	}
 
 	public void agregarRobopuerto(Robopuerto p) {
 		puertos.add(p);
-		LOGGER.info(() -> "Robopuerto agregado: " + p.getUbicacion());
+		System.out.println("Robopuerto agregado: " + p.getUbicacion());
+		//LOGGER.info(() -> "Robopuerto agregado: " + p.getUbicacion());
 	}
 
 	public void agregarRobot(RobotLogistico r) {
 		robots.add(r);
-		LOGGER.info(() -> "Robot agregado: " + r.getUbicacion());
+		//LOGGER.info(() -> "Robot agregado: " + r.getUbicacion());
+		System.out.println("Robot agregado: " + r.getUbicacion());
 	}
 
 	public List<Solicitud> obtenerSolicitudesPendientes() {
@@ -67,7 +71,9 @@ public class SistemaLogistico {
 	 * Actualiza la solicitud correspondiente y registra logs.
 	 */
 	public void generarTransporte(Cofre origen, Cofre destino, Item item, int cantidad) {
-		LOGGER.info(() -> String.format("Generando transporte: %d de %s de %s a %s", cantidad, item,
+		//LOGGER.info(() -> String.format("Generando transporte: %d de %s de %s a %s", cantidad, item,
+				//origen.getUbicacion(), destino.getUbicacion()));
+		System.out.println(String.format("Generando transporte: %d de %s de %s a %s", cantidad, item,
 				origen.getUbicacion(), destino.getUbicacion()));
 		solicitudes.stream()
 				.filter(s -> s.getCofreDestino().equals(destino) && s.getItem().equals(item) && !s.estaCompletada())
@@ -76,7 +82,9 @@ public class SistemaLogistico {
 					if (s.estaCompletada()) {
 						solicitudes.remove(s);
 						solicitudesCompletadas.add(s);
-						LOGGER.info(() -> String.format("Solicitud completada y removida: %s en %s", item,
+						//LOGGER.info(() -> String.format("Solicitud completada y removida: %s en %s", item,
+							//	destino.getUbicacion()));
+						System.out.println(String.format("Solicitud completada y removida: %s en %s", item,
 								destino.getUbicacion()));
 					}
 				});

@@ -13,7 +13,7 @@ import main.java.coloniaDeRobots.util.CaminoEsperado;
 import main.java.logistica.excepciones.ExcepcionLogistica;
 
 public class RobotLogistico extends ElementoLogistico {
-	private static final Logger LOGGER = Logger.getLogger(RobotLogistico.class.getName());
+	//private static final Logger LOGGER = Logger.getLogger(RobotLogistico.class.getName());
 	private final int capacidadCarga;
 	private final double bateriaMaxima;
 	private double bateriaActual;
@@ -37,6 +37,8 @@ public class RobotLogistico extends ElementoLogistico {
 		this.bateriaSimulacion = bateriaActual;
 		// LOGGER.info(() -> String.format("Robot en %s: carga %d, batería %.2f",
 		// ubicacion, capacidadCarga, capacidadBateria));
+		System.out.println(String.format("Robot en %s: carga %d, batería %.2f",
+		 ubicacion, capacidadCarga, capacidadBateria));
 	}
 
 	/**
@@ -172,8 +174,9 @@ public class RobotLogistico extends ElementoLogistico {
 
 	public void consumirBateria(double cantidad) {
 		setBateriaActual(Math.max(0, getBateriaActual() - cantidad));
-		LOGGER.fine(() -> String.format("Robot en %s consumió %.2f batería (resta %.2f)", ubicacion, cantidad,
-				getBateriaActual()));
+		//LOGGER.fine(() -> String.format("Robot en %s consumió %.2f batería (resta %.2f)", ubicacion, cantidad,
+				//getBateriaActual()));
+		System.out.println(String.format("Robot en %s consumió %.2f batería (resta %.2f)", ubicacion, cantidad,getBateriaActual()));
 	}
 
 	/**
@@ -198,7 +201,8 @@ public class RobotLogistico extends ElementoLogistico {
 		Robopuerto rp = getRobopuertoActual();
 		if (rp != null) {
 			setBateriaActual(bateriaMaxima);
-			EventBus.getDefault().post(new RobotEvent(this, rp));
+			//EventBus.getDefault().post(new RobotEvent(this, rp));
+			System.out.println("Recargando bateria del robot en robopuerto");
 		}
 	}
 

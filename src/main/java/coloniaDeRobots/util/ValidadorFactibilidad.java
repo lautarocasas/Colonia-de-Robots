@@ -25,7 +25,6 @@ public class ValidadorFactibilidad {
      */
     public static void validarFactibilidad(List<Cofre> cofres) throws SolicitudInviableException {
         Map<Cofre, List<Item>> inviables = new LinkedHashMap<>();
-
         // Prepara lista de proveedores iniciales
         List<Cofre> proveedores = obtenerCofresProveedores(cofres);
         // Para cada cofre con solicitudes

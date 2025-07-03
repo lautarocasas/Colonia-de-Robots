@@ -22,8 +22,8 @@ public class CofreIntermedio extends Cofre {
 
 	@Override
 	public void accionar(SistemaLogistico sistema) {
-		EventBus.getDefault().post(new CofreAccionadoEvent(this));
-		
+		//EventBus.getDefault().post(new CofreAccionadoEvent(this));
+		System.out.println("Accionando en cofre intermedio");
 		// Fase solicitud
 		for (Map.Entry<Item, Integer> e : solicitudes.entrySet()) {
 			Item item = e.getKey();
@@ -32,8 +32,9 @@ public class CofreIntermedio extends Cofre {
 			int pendiente = total - recibidos;
 			if (pendiente > 0) {
 				sistema.registrarSolicitud(new Solicitud(this, item, pendiente));
-				Logger.getLogger(getClass().getName())
-						.info(() -> String.format("[%s] Intermedio solicita %d de %s", ubicacion, pendiente, item));
+				/*Logger.getLogger(getClass().getName())
+						.info(() -> String.format("[%s] Intermedio solicita %d de %s", ubicacion, pendiente, item));*/
+				System.out.println(String.format("[%s] Intermedio solicita %d de %s", ubicacion, pendiente, item));
 			}
 		}
 		// Fase pasiva: el sistema puede retirar stock como en pasiva

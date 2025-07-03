@@ -25,7 +25,7 @@ class GestorArchivosTest {
     @Test
     void testValidSimple() {
         assertDoesNotThrow(() ->
-            loader.cargarDesdeArchivo("src/main/resources/valid_simple.json")
+            loader.cargarDesdeArchivo("src/main/resources/valid_simple.json",1.0)
         );
     }
 
@@ -44,14 +44,14 @@ class GestorArchivosTest {
             default: throw new IllegalArgumentException("Excepción desconocida");
         }
         assertThrows(expected, () ->
-            loader.cargarDesdeArchivo(path)
+            loader.cargarDesdeArchivo(path,1.0)
         );
     }
 
     @Test
     void testComplex() {
         assertDoesNotThrow(() ->
-            loader.cargarDesdeArchivo("src/main/resources/complex.json")
+            loader.cargarDesdeArchivo("src/main/resources/complex.json",1.0)
         );
     }
 }

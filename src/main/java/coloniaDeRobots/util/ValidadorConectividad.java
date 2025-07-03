@@ -89,7 +89,7 @@ public class ValidadorConectividad {
 				Robopuerto primerRobopuerto = puertos.get(i);
 				Robopuerto segundoRobopuerto = puertos.get(j);
 				double distancia = primerRobopuerto.getUbicacion().calcularDistanciaA(segundoRobopuerto.getUbicacion());
-				if (distancia <= primerRobopuerto.getAlcance() + segundoRobopuerto.getAlcance()) { // no entiendo la validacion 
+				if (distancia <= primerRobopuerto.getAlcance() + segundoRobopuerto.getAlcance()) {
 					adj.get(primerRobopuerto).add(segundoRobopuerto);
 					adj.get(segundoRobopuerto).add(primerRobopuerto);
 				}

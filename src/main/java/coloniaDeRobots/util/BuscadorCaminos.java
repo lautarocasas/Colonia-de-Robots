@@ -74,7 +74,7 @@ public class BuscadorCaminos {
             for (var nodoADeterminar : grafo.getOrDefault(nodoSeleccionado, Map.of()).entrySet()) {
                 ElementoLogistico siguienteNodo = nodoADeterminar.getKey();
                 double peso = nodoADeterminar.getValue();
-                double alt = dist.get(nodoSeleccionado) + peso;// q hace aca?
+                double alt = dist.get(nodoSeleccionado) + peso;
                 if (alt < dist.get(siguienteNodo)) {
                     dist.put(siguienteNodo, alt);
                     prev.put(siguienteNodo, nodoSeleccionado);

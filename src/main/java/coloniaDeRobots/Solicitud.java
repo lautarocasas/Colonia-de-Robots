@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import main.java.coloniaDeRobots.cofres.Cofre;
 
 public class Solicitud {
-    private static final Logger LOGGER = Logger.getLogger(Solicitud.class.getName());
+    //private static final Logger LOGGER = Logger.getLogger(Solicitud.class.getName());
     private final Cofre origen;
     private Cofre cofreMaterial = null;
     private final Item item;
@@ -19,7 +19,8 @@ public class Solicitud {
         if (cantidadTotal <= 0) throw new IllegalArgumentException("Cantidad debe ser positiva");
         this.cantidadTotal = cantidadTotal;
         this.cantidadRecibida = 0;
-        LOGGER.info(() -> String.format("Solicitud creada en %s: %d de %s", origen.getUbicacion(), cantidadTotal, item));
+        //LOGGER.info(() -> String.format("Solicitud creada en %s: %d de %s", origen.getUbicacion(), cantidadTotal, item));
+        System.out.println(String.format("Solicitud creada en %s: %d de %s", origen.getUbicacion(), cantidadTotal, item));
     }
 
     public Item getItem() { return item; }
@@ -43,10 +44,13 @@ public class Solicitud {
         int toAdd = Math.min(cantidad, getCantidadPendiente());
         if (toAdd <= 0) return;
         cantidadRecibida += toAdd;
-        LOGGER.info(() -> String.format("Solicitud en %s recibió %d de %s (pendiente %d)",
+        //LOGGER.info(() -> String.format("Solicitud en %s recibió %d de %s (pendiente %d)",
+           // origen.getUbicacion(), toAdd, item, getCantidadPendiente()));
+        System.out.println(String.format("Solicitud en %s recibió %d de %s (pendiente %d)",
             origen.getUbicacion(), toAdd, item, getCantidadPendiente()));
         if (estaCompletada()) {
-            LOGGER.info(() -> String.format("Solicitud en %s COMPLETADA para %s", origen.getUbicacion(), item));
+           // LOGGER.info(() -> String.format("Solicitud en %s COMPLETADA para %s", origen.getUbicacion(), item));
+            System.out.println(String.format("Solicitud en %s COMPLETADA para %s", origen.getUbicacion(), item));
         }
     }
 
