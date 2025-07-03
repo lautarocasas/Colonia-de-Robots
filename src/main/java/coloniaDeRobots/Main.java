@@ -1,32 +1,45 @@
 package main.java.coloniaDeRobots;
 
-import main.java.coloniaDeRobots.eventos.ConsoleLoggerListener;
-import main.java.coloniaDeRobots.eventos.EventBus;
-import main.java.coloniaDeRobots.eventos.Evento;
-import main.java.coloniaDeRobots.util.MetricsCollector;
+import main.java.coloniaDeRobots.cofres.Cofre;
 import main.java.logistica.excepciones.ExcepcionLogistica;
 import main.java.logistica.io.GestorArchivos;
 
 public class Main {
+	private static final double FACTOR_CONSUMO = 1.0;
 
-	public static void main(String[] args) {
-		// Configurar el EventBus singleton
-		MetricsCollector metrics = new MetricsCollector();
-		EventBus bus = EventBus.getDefault();
-		ConsoleLoggerListener consola = new ConsoleLoggerListener();
-		// Suscribir al tipo Evento para capturar cualquier evento
-		bus.register(Evento.class, consola);
-		bus.register(Evento.class, metrics);
-		try {
-			GestorArchivos loader = new GestorArchivos();
-			SistemaLogistico sistema = loader.cargarDesdeArchivo("src/main/resources/config_stress.json");
-			int ciclosEjecutados = sistema.run();  // lo adaptamos para devolver int
-		    metrics.printSummary(ciclosEjecutados);
-		} catch (ExcepcionLogistica e) {
-			System.err.println("Error al inicializar el sistema: " + e.getMessage());
-			e.printStackTrace();
-		}
+    public static void main(String[] args) {
+        try {
+            // Cargamos toda la configuración desde JSON
+            GestorArchivos loader = new GestorArchivos();
+            SistemaLogistico sistema = loader.cargarDesdeArchivo(
+                "src/main/resources/config.json",
+                FACTOR_CONSUMO
+            );
 
-	}
+            // Ejecutamos la simulación
+            sistema.run();
+
+            // Mostramos inventarios finales de cada cofre
+            System.out.println("\n=== Inventarios finales de cofres ===");
+            for (Cofre c : sistema.getCofres()) {
+                System.out.printf(
+                    "- %s [%s]: %s%n",
+                    c.getClass().getSimpleName(),
+                    c.getUbicacion(),
+                    c.getInventario()
+                );
+            }
+
+            // Solicitudes completadas
+            System.out.printf(
+                "%nSolicitudes completadas: %d%n",
+                sistema.getSolicitudesCompletadas().size()
+            );
+
+        } catch (ExcepcionLogistica e) {
+            System.err.println("Error al inicializar o correr la simulación:");
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -12,6 +12,6 @@ public class Robopuerto extends ElementoLogistico {
     public double getAlcance() { return alcance; }
 
     public boolean cubre(Ubicacion u) {
-        return ubicacion.distanciaA(u) <= alcance;
+        return ubicacion.calcularDistanciaA(u) <= alcance;
     }
 }

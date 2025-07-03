@@ -44,7 +44,11 @@
     { "tipo": "SOLICITUD", "x": -5,  "y":  0, "solicitudes": { "wood": 60 } },
     { "tipo": "SOLICITUD", "x":  0,  "y":  5, "solicitudes": { "plastic": 70 } },
     { "tipo": "SOLICITUD", "x":  0,  "y": -5, "solicitudes": { "gold": 80 } },
-    { "tipo": "SOLICITUD", "x": 25,  "y": 25, "solicitudes": { "iron": 20, "gold": 50 } }
+    { "tipo": "SOLICITUD", "x": 25,  "y": 25, "solicitudes": { "iron": 20, "gold": 50 } },
+
+    { "tipo": "ALMACENAMIENTO", "x":   1, "y":   0, "inventario": {} },
+    { "tipo": "ALMACENAMIENTO", "x":  30, "y": -30, "inventario": {} },
+    { "tipo": "ALMACENAMIENTO", "x": -30, "y":  30, "inventario": {} }
   ],
   "robots": [
     { "x":  0,  "y":  0,  "bateria": 60, "capacidadCarga": 5 },

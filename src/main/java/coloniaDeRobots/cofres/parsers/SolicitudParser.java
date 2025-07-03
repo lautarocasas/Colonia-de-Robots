@@ -43,23 +43,4 @@ public class SolicitudParser extends BaseParser {
 	    return solicitudes;
 	}
 
-	/*Metodo antiguo: si les parece ok dejamos el que refactorice, sino volvemos a poner esto
-	 * 
-	 * public CofreSolicitud parse(JsonNode nodo) throws ExcepcionLogistica {
-	Ubicacion ubicacion = parseUbicacion(nodo);
-	Map<Item, Integer> inventario = parseInventario(nodo);
-	JsonNode nodoSolicitud = nodo.path("solicitudes");
-	if (nodoSolicitud.isMissingNode() || nodoSolicitud.size() == 0)
-		throw new EstructuraInvalidaException("Cofre SOLICITUD sin 'solicitudes'.", null);
-	Map<Item, Integer> solicitudes = new HashMap<>();
-	for (Iterator<String> it = nodoSolicitud.fieldNames(); it.hasNext();) {
-		String nombre = it.next();
-		int cantidad = nodoSolicitud.get(nombre).asInt(-1);
-		if (cantidad <= 0)
-			throw new ValorInvalidoException("Cantidad inválida en solicitud de " + nombre);
-		solicitudes.put(new Item(nombre), cantidad);
-	}
-	return new CofreSolicitud(ubicacion, inventario, solicitudes);
-}*/
-
 }

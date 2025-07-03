@@ -3,21 +3,21 @@ package main.java.coloniaDeRobots;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
-import java.util.logging.Logger;
 
 import main.java.coloniaDeRobots.cofres.Cofre;
-import main.java.coloniaDeRobots.eventos.EventBus;
-import main.java.coloniaDeRobots.eventos.RobotEvent;
 import main.java.coloniaDeRobots.util.BuscadorCaminos;
+import main.java.coloniaDeRobots.util.CaminoEsperado;
+import main.java.logistica.excepciones.ExcepcionLogistica;
 
 public class RobotLogistico extends ElementoLogistico {
-	private static final Logger LOGGER = Logger.getLogger(RobotLogistico.class.getName());
 	private final int capacidadCarga;
 	private final double bateriaMaxima;
 	private double bateriaActual;
+	private double bateriaSimulacion;
 	private List<Robopuerto> robopuertos; // para detectar recarga
 	private List<Cofre> cofres;
-	private final Deque<Ubicacion> ruta = new ArrayDeque<>();
+	private final Deque<ElementoLogistico> ruta = new ArrayDeque<>();
+	private Solicitud pedido;
 
 	/**
 	 * @param ubicacion      Posición inicial
@@ -27,12 +27,13 @@ public class RobotLogistico extends ElementoLogistico {
 	public RobotLogistico(Ubicacion ubicacion, int capacidadCarga, double capacidadBateria) {
 		super(ubicacion);
 		if (capacidadCarga <= 0 || capacidadBateria <= 0)
-			throw new IllegalArgumentException("Capacidad inválida");
+			throw new IllegalArgumentException("Capacidad invalida");
 		this.capacidadCarga = capacidadCarga;
 		this.bateriaMaxima = capacidadBateria;
 		this.setBateriaActual(capacidadBateria);
-		// LOGGER.info(() -> String.format("Robot en %s: carga %d, batería %.2f",
-		// ubicacion, capacidadCarga, capacidadBateria));
+		this.bateriaSimulacion = bateriaActual;
+		System.out.println(String.format("Robot en %s: carga %d, bateria %.2f",
+		 ubicacion, capacidadCarga, capacidadBateria));
 	}
 
 	/**
@@ -53,32 +54,150 @@ public class RobotLogistico extends ElementoLogistico {
 	/**
 	 * Planifica la ruta óptima hasta destino, pasando por consecución de
 	 * ubicaciones.
+	 * @return TODO
+	 * @throws ExcepcionLogistica 
 	 */
-	public void planificarRuta(Ubicacion origen, Ubicacion destino) {
-		List<Ubicacion> camino = BuscadorCaminos.caminoMasCorto(origen, destino, cofres, robopuertos);
-		ruta.clear();
-		for (Ubicacion u : camino) {
-			ruta.add(u);
+	public boolean planificarRuta(Ubicacion origen, Ubicacion destino, double factorConsumo, Solicitud sol) throws ExcepcionLogistica {
+		Robopuerto ultimoRobopuerto;
+		
+		// Cargar la batería de simulación
+		this.bateriaSimulacion = this.bateriaActual; 
+		
+		// Determinar la ruta más corta hacia la el cofre que proveera los elementos de la solicitud
+		CaminoEsperado caminoBusqueda = BuscadorCaminos.calcularCaminoMasCorto(this.ubicacion, destino, cofres, robopuertos);
+		
+		// Validar si puedo volver al robopuerto
+		if(!haybateriaSuficiente(caminoBusqueda, factorConsumo, true)) {
+			this.bateriaSimulacion = this.bateriaActual;
+			return false;
 		}
+		
+		// Determinar la ruta desde el cofre que provee hasta el de la solicitud
+		CaminoEsperado caminoEntrega = BuscadorCaminos.calcularCaminoMasCorto(destino, origen, cofres, robopuertos);
+		if(!haybateriaSuficiente(caminoEntrega, factorConsumo, false)) {
+			this.bateriaSimulacion = this.bateriaActual;
+			return false;
+		}
+		
+		// Luego de la entrega, volver al último robopuerto.
+		ultimoRobopuerto = caminoEntrega.getEstacionDeCarga().get(caminoEntrega.getEstacionDeCarga().size() - 1);
+		CaminoEsperado retornoRobopuerto = BuscadorCaminos.calcularCaminoMasCorto(origen, ultimoRobopuerto.getUbicacion(), cofres, robopuertos);
+		if(!haybateriaSuficiente(retornoRobopuerto, factorConsumo, false)) {
+			this.bateriaSimulacion = this.bateriaActual;
+			return false;
+		}
+		
+		List<ElementoLogistico> caminoBusquedaColl = caminoBusqueda.getCamino();
+		List<ElementoLogistico> caminoEntregaColl = caminoEntrega.getCamino();
+		List<ElementoLogistico> caminoRobopuertoColl = retornoRobopuerto.getCamino();
+		
+		caminoBusquedaColl.remove(0);
+		caminoEntregaColl.remove(0);
+		caminoRobopuertoColl.remove(0);
+		
+		// Limpiar la ruta actual
+		ruta.clear();
+		
+		// Agregar los caminos
+		ruta.addAll(caminoBusquedaColl);
+		ruta.addAll(caminoEntregaColl);
+		ruta.addAll(caminoRobopuertoColl);
+		
+		// Asignar solicitud al robot
+		this.pedido = sol;
+		
+		return true;
+		
+	}
+
+	private boolean haybateriaSuficiente(CaminoEsperado caminoBusqueda
+			, double factorConsumo
+			, boolean idavuelta) {
+		double consumoBateria = 0, distanciaInicial = 0, distanciaNueva = 0;
+		
+		List<ElementoLogistico> recorrido = caminoBusqueda.getCamino();
+		
+		for(int i = 0; i < recorrido.size() - 1; i++) {
+			ElementoLogistico ubicacionVieja = recorrido.get(i);
+			ElementoLogistico ubicacionNueva = recorrido.get(i+1);
+			
+			distanciaInicial = caminoBusqueda.getDistancia().get(ubicacionVieja);
+			distanciaNueva = caminoBusqueda.getDistancia().get(ubicacionNueva);
+			
+			consumoBateria = (distanciaNueva - distanciaInicial)*factorConsumo;
+			
+			if(bateriaSimulacion < consumoBateria)
+				return false;
+			
+			bateriaSimulacion -= consumoBateria;
+			if(ubicacionNueva instanceof Robopuerto ) {
+				bateriaSimulacion = this.bateriaMaxima;
+			}		
+		}
+		
+		// Parametro para calcular si tengo que hacer un ida y vuelta.
+		// boca boca boca
+		if(!idavuelta)
+			return true;
+		
+		for(int i = recorrido.size() - 1; i >= 1; i--) {
+			ElementoLogistico ubicacionVieja = recorrido.get(i);
+			ElementoLogistico ubicacionNueva = recorrido.get(i-1);
+			
+			distanciaInicial = caminoBusqueda.getDistancia().get(ubicacionVieja);
+			distanciaNueva = caminoBusqueda.getDistancia().get(ubicacionNueva);
+			
+			consumoBateria = (distanciaInicial - distanciaNueva)*factorConsumo;
+			
+			if(bateriaSimulacion < consumoBateria)
+				return false;
+			
+			bateriaSimulacion -= consumoBateria;
+			if(ubicacionNueva instanceof Robopuerto ) {
+				bateriaSimulacion = this.bateriaMaxima;
+			}		
+		}
+		
+		return true;
 	}
 
 	/**
 	 * Avanza al siguiente punto de la ruta, consumiendo batería.
 	 */
-	public void avanzar() {
+	public void avanzar(double factorConsumo) {
 		if (ruta.isEmpty())
 			return;
-		Ubicacion siguiente = ruta.poll();
-		double distancia = getUbicacion().distanciaA(siguiente);
-		double consumo = distancia * 1.0; // factor de consumo fijo
+		
+		// Ubicación actual del robot
+		ElementoLogistico siguiente = ruta.poll();
+		double distancia = getUbicacion().calcularDistanciaA(siguiente.getUbicacion());
+		double consumo = distancia * factorConsumo;
+		
 		if (getBateriaActual() < consumo) {
 			// No puede avanzar sin recarga; cancelar ruta
 			ruta.clear();
 			return;
 		}
+		
 		setBateriaActual(getBateriaActual() - consumo);
+		
 		// Actualizar posición
-		this.ubicacion = siguiente;
+		this.ubicacion = siguiente.getUbicacion();
+		
+		// ACTIVAR POSICIÓN
+		if(siguiente instanceof Robopuerto)
+			this.recargar();
+		else if (siguiente instanceof Cofre) {
+			if(siguiente.getUbicacion().equals(pedido.getCofreDestino().getUbicacion())) {
+				((Cofre) siguiente).retirarItem(pedido.getItem(), capacidadCarga);
+			}
+			
+			if(siguiente.getUbicacion().equals(pedido.getCofreOrigen().getUbicacion())) {
+				((Cofre) siguiente).agregarItem(pedido.getItem(), capacidadCarga);
+				pedido.registrarEntrega(capacidadCarga);
+			}
+		}
+		
 	}
 
 	public boolean puedeTransportar(int cantidad) {
@@ -91,8 +210,7 @@ public class RobotLogistico extends ElementoLogistico {
 
 	public void consumirBateria(double cantidad) {
 		setBateriaActual(Math.max(0, getBateriaActual() - cantidad));
-		LOGGER.fine(() -> String.format("Robot en %s consumió %.2f batería (resta %.2f)", ubicacion, cantidad,
-				getBateriaActual()));
+		System.out.println(String.format("Robot en %s consumio %.2f batería (resta %.2f)", ubicacion, cantidad,getBateriaActual()));
 	}
 
 	/**
@@ -117,7 +235,7 @@ public class RobotLogistico extends ElementoLogistico {
 		Robopuerto rp = getRobopuertoActual();
 		if (rp != null) {
 			setBateriaActual(bateriaMaxima);
-			EventBus.getDefault().post(new RobotEvent(this, rp));
+			System.out.println("Recargando bateria del robot en robopuerto");
 		}
 	}
 
@@ -137,5 +255,24 @@ public class RobotLogistico extends ElementoLogistico {
 
 	public void setBateriaActual(double bateriaActual) {
 		this.bateriaActual = bateriaActual;
+	}
+	
+	public boolean tareaCompleta() {
+		if(this.pedido == null)
+			return false;
+		
+		return this.pedido.estaCompletada();
+	}
+	
+	public Solicitud devolverSolicitud() {
+		return this.pedido;
+	}
+	
+	public void finalizarSolicitud() {
+		if(!tareaCompleta())
+			return;
+		
+		this.pedido = null;
+			
 	}
 }

@@ -8,8 +8,7 @@ import main.java.coloniaDeRobots.Item;
 import main.java.coloniaDeRobots.SistemaLogistico;
 import main.java.coloniaDeRobots.Solicitud;
 import main.java.coloniaDeRobots.Ubicacion;
-import main.java.coloniaDeRobots.eventos.CofreAccionadoEvent;
-import main.java.coloniaDeRobots.eventos.EventBus;
+
 
 public class CofreSolicitud extends Cofre {
     private final Map<Item,Integer> solicitudes;
@@ -21,8 +20,7 @@ public class CofreSolicitud extends Cofre {
 
     @Override
     public void accionar(SistemaLogistico sistema) {
-        // Logger.getLogger(getClass().getName()).info(() -> "Accionando Solicitud en " + ubicacion);
-    	EventBus.getDefault().post(new CofreAccionadoEvent(this));
+    	System.out.println("Accionando solicitud en "+ubicacion);
     	
         for (Map.Entry<Item,Integer> e : solicitudes.entrySet()) {
             Item item = e.getKey();
@@ -38,4 +36,6 @@ public class CofreSolicitud extends Cofre {
 	public Map<Item, Integer> getSolicitudes() {
 		return solicitudes;
 	}
+	
+	
 }

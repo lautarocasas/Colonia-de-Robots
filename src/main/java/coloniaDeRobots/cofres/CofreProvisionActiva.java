@@ -7,8 +7,7 @@ import main.java.coloniaDeRobots.Item;
 import main.java.coloniaDeRobots.SistemaLogistico;
 import main.java.coloniaDeRobots.Solicitud;
 import main.java.coloniaDeRobots.Ubicacion;
-import main.java.coloniaDeRobots.eventos.CofreAccionadoEvent;
-import main.java.coloniaDeRobots.eventos.EventBus;
+
 
 public class CofreProvisionActiva extends Cofre {
 	public CofreProvisionActiva(Ubicacion ubicacion, Map<Item, Integer> inventario) {
@@ -17,23 +16,29 @@ public class CofreProvisionActiva extends Cofre {
 
 	@Override
 	public void accionar(SistemaLogistico sistema) {
-		EventBus.getDefault().post(new CofreAccionadoEvent(this));
+	    System.out.println("Accionando en un cofre de provisión activa");
+	    List<Solicitud> pendientes = sistema.obtenerSolicitudesPendientes();
 
-		List<Solicitud> solicitudes = sistema.obtenerSolicitudesPendientes();
+	    for (Solicitud s : pendientes) {
+	        Item item = s.getItem();
+	        int faltante = s.getCantidadPendiente();
+	        int disponible = getCantidadItem(item);
 
-		for (Solicitud s : solicitudes) {
-			Item item = s.getItem();
-			int pendiente = s.getCantidadPendiente();
-			int disponible = getCantidadItem(item);
+	        if (disponible <= 0 || faltante <= 0) continue;
 
-			if (pendiente <= 0 || disponible <= 0)
-				continue;
-
-			int aEnviar = Math.min(disponible, pendiente);
-			if (retirarItem(item, aEnviar)) {
-				sistema.generarTransporte(this, s.getCofreDestino(), item, aEnviar);
-			}
-		}
+	        int aEnviar = Math.min(disponible, faltante);
+	        if (retirarItem(item, aEnviar)) {
+	            // Ahora le paso la solicitud en curso:
+	            sistema.generarTransporte(
+	                this,
+	                s.getCofreDestino(),
+	                item,
+	                aEnviar,
+	                s               // <— aquí
+	            );
+	        }
+	    }
 	}
+
 
 }

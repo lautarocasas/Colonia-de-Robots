@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import main.java.coloniaDeRobots.cofres.Cofre;
 import main.java.coloniaDeRobots.util.ResultadoConectividad;
@@ -20,7 +19,6 @@ import main.java.logistica.excepciones.UbicacionDuplicadaException;
  * Builder para configurar y validar SistemaLogistico antes de ejecutar la simulación.
  */
 public class SistemaLogisticoBuilder {
-    private static final Logger LOGGER = Logger.getLogger(SistemaLogisticoBuilder.class.getName());
 
     private double factorConsumo;
     private final List<Cofre> cofres = new ArrayList<>();
@@ -76,10 +74,10 @@ public class SistemaLogisticoBuilder {
         // 2. Validar conectividad y filtrar cofres inaccesibles
         ResultadoConectividad cr = ValidadorConectividad.validarConectividad(cofres, puertos);
         if (!cr.cofresInaccesibles.isEmpty()) {
-            LOGGER.warning(() -> String.format(
-                "Se omitirán %d cofres fuera de cobertura: %s",
-                cr.cofresInaccesibles.size(), cr.cofresInaccesibles
-            ));
+            System.out.println(String.format(
+                    "Se omitiran %d cofres fuera de cobertura: %s",
+                    cr.cofresInaccesibles.size(), cr.cofresInaccesibles
+                ));
         }
         List<Cofre> accesibles = cr.cofresAccesibles;
 
@@ -95,7 +93,7 @@ public class SistemaLogisticoBuilder {
         accesibles.forEach(sistema::agregarCofre);
         puertos.forEach(sistema::agregarRobopuerto);
         robots.forEach(sistema::agregarRobot);
-        LOGGER.info("SistemaLogistico construido con éxito");
+        System.out.println("Sistema Logistico construido con exito");
         return sistema;
     }
 
@@ -104,13 +102,13 @@ public class SistemaLogisticoBuilder {
         for (Cofre c : cofres) {
             String key = c.getUbicacion().toString();
             if (!llaves.add(key)) {
-                throw new UbicacionDuplicadaException("Ubicación duplicada de cofre: " + key);
+                throw new UbicacionDuplicadaException("Ubicacion duplicada de cofre: " + key);
             }
         }
         for (Robopuerto rp : puertos) {
             String key = rp.getUbicacion().toString();
             if (!llaves.add(key)) {
-                throw new UbicacionDuplicadaException("Ubicación duplicada de robopuerto: " + key);
+                throw new UbicacionDuplicadaException("Ubicacion duplicada de robopuerto: " + key);
             }
         }
     }

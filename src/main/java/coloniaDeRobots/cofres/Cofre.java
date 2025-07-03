@@ -3,7 +3,6 @@ package main.java.coloniaDeRobots.cofres;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import main.java.coloniaDeRobots.ElementoLogistico;
 import main.java.coloniaDeRobots.Item;
@@ -11,13 +10,12 @@ import main.java.coloniaDeRobots.SistemaLogistico;
 import main.java.coloniaDeRobots.Ubicacion;
 
 public abstract class Cofre extends ElementoLogistico {
-	private static final Logger LOGGER = Logger.getLogger(Cofre.class.getName());
 	protected final Map<Item, Integer> inventario; // Mapa que asigna a cada itemId una cantidad
 
 	public Cofre(Ubicacion ubicacion, Map<Item, Integer> inventario) {
 		super(ubicacion);
 		this.inventario = new HashMap<>(inventario);
-		LOGGER.info(() -> String.format("Cofre creado en %s con inventario %s", ubicacion, this.inventario));
+		System.out.println(String.format("Cofre creado en %s con inventario %s", ubicacion, this.inventario));
 	}
 
 	/**
@@ -26,11 +24,6 @@ public abstract class Cofre extends ElementoLogistico {
 	public int getCantidadItem(Item item) {
 		return inventario.getOrDefault(item, 0); // Si existe el item en el inventario, se obtiene la cantidad, sino, se
 													// obtiene 0
-	}
-
-	public void accion(SistemaLogistico sistema) {
-		// TODO Auto-generated method stub
-
 	}
 
 	/**
@@ -46,7 +39,7 @@ public abstract class Cofre extends ElementoLogistico {
 		int actual = getCantidadItem(item);
 		// Solo retira si hay suficiente stock para la solicitud completa
 		if (actual < cantSolicitada) {
-			LOGGER.fine(() -> String.format("[%s] Stock insuficiente para retirar %d de %s (solo %d disponibles)",
+			System.out.println(String.format("[%s] Stock insuficiente para retirar %d de %s (solo %d disponibles)",
 					ubicacion, cantSolicitada, item, actual));
 			return false;
 		}
@@ -57,7 +50,7 @@ public abstract class Cofre extends ElementoLogistico {
 		} else {
 			inventario.remove(item);
 		}
-		LOGGER.info(() -> String.format("[%s] Retirado %d de %s (restan %d)", ubicacion, cantSolicitada, item,
+		System.out.println(String.format("[%s] Retirado %d de %s (restan %d)", ubicacion, cantSolicitada, item,
 				getCantidadItem(item)));
 		return true;
 	}
@@ -68,7 +61,7 @@ public abstract class Cofre extends ElementoLogistico {
 	public void agregarItem(Item item, int cantidad) {
 		int actual = getCantidadItem(item);
 		inventario.put(item, actual + cantidad);
-		LOGGER.info(() -> String.format("[%s] Agregado %d de %s (total %d)", ubicacion, cantidad, item,
+		System.out.println(String.format("[%s] Agregado %d de %s (total %d)", ubicacion, cantidad, item,
 				getCantidadItem(item)));
 	}
 
