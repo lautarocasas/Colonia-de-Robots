@@ -9,19 +9,18 @@ public class Main {
 	private static final double FACTOR_CONSUMO = 1.0;
 
     public static void main(String[] args) {
-        MetricsCollector metrics = new MetricsCollector();
         try {
-            // 1) Carga toda la configuración desde JSON
+            // Cargamos toda la configuración desde JSON
             GestorArchivos loader = new GestorArchivos();
             SistemaLogistico sistema = loader.cargarDesdeArchivo(
-                "src/main/resources/config_stress.json",
+                "src/main/resources/config.json",
                 FACTOR_CONSUMO
             );
 
-            // 2) Ejecuta la simulación
-            int ciclosEjecutados = sistema.run();
+            // Ejecutamos la simulación
+            sistema.run();
 
-            // 4) Muestra inventarios finales de cada cofre
+            // Mostramos inventarios finales de cada cofre
             System.out.println("\n=== Inventarios finales de cofres ===");
             for (Cofre c : sistema.getCofres()) {
                 System.out.printf(
@@ -32,7 +31,7 @@ public class Main {
                 );
             }
 
-            // 5) Cuántas solicitudes se completaron
+            // Solicitudes completadas
             System.out.printf(
                 "%nSolicitudes completadas: %d%n",
                 sistema.getSolicitudesCompletadas().size()

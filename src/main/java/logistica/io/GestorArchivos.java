@@ -70,8 +70,12 @@ public class GestorArchivos {
 			validarUbicaciones(cofres, robopuertos);
 
 			// 6. Construir sistema
-			SistemaLogistico sistema = new SistemaLogisticoBuilder().withFactorConsumo(factor).addCofres(cofres)
-					.addRobopuertos(robopuertos).addRobots(robots).build();
+			SistemaLogistico sistema = new SistemaLogisticoBuilder()
+					.withFactorConsumo(factor)
+					.addCofres(cofres)
+					.addRobopuertos(robopuertos)
+					.addRobots(robots)
+					.build();
 
 			return sistema;
 

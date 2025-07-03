@@ -198,10 +198,11 @@ public class SistemaLogistico {
 		}
 		// 4) Fase final: vaciado de provisiones activas
 	    if (solicitudes.isEmpty()) {
+	        System.out.printf("\n\n===================================\n");
 	        System.out.println("Todas las solicitudes completadas. Vaciando provisiones activas...");
 	        boolean ok = vaciarProvisionesActivasEnAlmacen();
 	        if (ok) {
-	            System.out.printf("ESTABLE tras %d ciclos.%n", ciclo);
+	            //System.out.printf("ESTABLE tras %d ciclos.%n", ciclo);
 	        } else {
 	            System.err.println("NO ESTABLE: fallo al vaciar provisiones activas.");
 	        }
