@@ -136,7 +136,6 @@ public class RobotLogistico extends ElementoLogistico {
 		}
 		
 		// Parametro para calcular si tengo que hacer un ida y vuelta.
-		// boca boca boca
 		if(!idavuelta)
 			return true;
 		

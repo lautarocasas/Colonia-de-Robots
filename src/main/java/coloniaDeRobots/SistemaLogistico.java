@@ -270,9 +270,6 @@ public class SistemaLogistico {
 	    return true;
 	}
 
-	// Métodos para planificar rutas, asignar robots, simular ciclos, etc.
-	// Pendientes de implementar basados en grafo y cobertura.
-
 	/**
 	 * Asigna cofres proveedores a cada solicitud pendiente, respetando
 	 * el orden de prioridad que ya tiene la lista `cofres`:
