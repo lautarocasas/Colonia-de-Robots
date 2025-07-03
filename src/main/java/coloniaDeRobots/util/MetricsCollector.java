@@ -12,22 +12,10 @@ import main.java.coloniaDeRobots.eventos.TransporteGeneradoEvent;
 /**
  * Collector que acumula métricas de transporte y recarga durante la simulación.
  */
-public class MetricsCollector {//implements EventListener<Evento> 
+public class MetricsCollector {
 	private final AtomicInteger totalTransportes = new AtomicInteger();
 	private final AtomicReference<Double> distanciaTotal = new AtomicReference<>(0.0);
 	private final AtomicInteger recargas = new AtomicInteger();
-
-	/*@Override
-	public void onEvent(Evento evento) {
-		if (evento instanceof TransporteGeneradoEvent) {
-			TransporteGeneradoEvent t = (TransporteGeneradoEvent) evento;
-			totalTransportes.incrementAndGet();
-			double d = t.origen.getUbicacion().calcularDistanciaA(t.destino.getUbicacion());
-			distanciaTotal.updateAndGet(prev -> prev + d);
-		} else if (evento instanceof RobotEvent) {
-			recargas.incrementAndGet();
-		}
-	}*/
 
 	/** Imprime al final un resumen de las métricas. */
 	public void printSummary(int ciclos) {

@@ -21,8 +21,6 @@ public class CofreSolicitud extends Cofre {
 
     @Override
     public void accionar(SistemaLogistico sistema) {
-        // Logger.getLogger(getClass().getName()).info(() -> "Accionando Solicitud en " + ubicacion);
-    	//EventBus.getDefault().post(new CofreAccionadoEvent(this));
     	System.out.println("Accionando solicitud en "+ubicacion);
     	
         for (Map.Entry<Item,Integer> e : solicitudes.entrySet()) {

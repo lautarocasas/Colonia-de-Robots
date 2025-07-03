@@ -17,7 +17,6 @@ public class CofreProvisionActiva extends Cofre {
 
 	@Override
 	public void accionar(SistemaLogistico sistema) {
-		//EventBus.getDefault().post(new CofreAccionadoEvent(this));
 		System.out.println("Accionando en un cofre de provision activa");
 		List<Solicitud> solicitudes = sistema.obtenerSolicitudesPendientes();
 
