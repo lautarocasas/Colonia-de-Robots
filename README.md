@@ -143,6 +143,11 @@ El **EventBus** permite publicar y suscribir eventos de forma desacoplada. Actua
 
 ---
 
+### Presentación del coloquio
+
+[Click acá](https://www.canva.com/design/DAGr7dUbT74/0nXUnJgZOtG5OeTGlQ-epg/edit)
+
+---
 ### Licencia
 
 Este código se entrega como parte del Trabajo Práctico de la materia y queda licenciado para uso académico en la UNLaM.
